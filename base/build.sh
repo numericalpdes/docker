@@ -12,6 +12,7 @@ apt install -y -qq autoconf bison build-essential cmake curl flex git jq libtool
 
 # gcc
 apt install -y gcc-11 g++-11 gfortran-11
+ln -s /usr/bin/gfortran-11 /usr/bin/gfortran
 
 # pip
 apt install -y -qq python3-pip
