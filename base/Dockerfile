@@ -7,9 +7,9 @@
 FROM ubuntu:rolling AS base
 MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
-RUN source scripts/docker_pre.sh && \
+RUN . scripts/docker_pre.sh && \
     bash base/build.sh && \
-    source scripts/docker_post.sh
+    . scripts/docker_post.sh
 
 RUN echo "export OMPI_ALLOW_RUN_AS_ROOT=1" >> ~/.bashrc && \
     echo "export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1" >> ~/.bashrc

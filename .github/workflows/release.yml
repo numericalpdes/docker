@@ -33,7 +33,6 @@ jobs:
           LIBRARY=${{ (inputs || github.event.inputs).library }}
           ARGS="${{ (inputs || github.event.inputs).args }}"
           docker build --pull -t numericalpdes/base_images:${LIBRARY} -f ${LIBRARY}/Dockerfile --build-arg ARGS=${ARGS} --build-arg INSTALL_SCRIPTS_ARG=${INSTALL_SCRIPTS} .
-        shell: bash
       - name: Test docker image
         run: |
           LIBRARY=${{ (inputs || github.event.inputs).library }}
