@@ -7,8 +7,8 @@
 FROM ubuntu:rolling AS base
 MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
-COPY . /tmp/docker_repo
-WORKDIR /tmp/docker_repo
+COPY . /usr/local/share/numerical-pdes-docker
+WORKDIR /usr/local/share/numerical-pdes-docker
 
 RUN . scripts/docker_pre.sh && \
     bash base/build.sh && \
