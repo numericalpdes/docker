@@ -9,7 +9,7 @@ apt -qq clean
 rm -rf /var/lib/apt/lists/*
 
 # Clean up caches and temporary folders
-/tmp/* /var/tmp/* /root/.cache
+rm -rf /tmp/* /var/tmp/* /root/.cache
 
 # Remove python symbolic link
 rm ${INSTALL_PREFIX}/lib/python3.7
