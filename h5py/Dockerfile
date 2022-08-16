@@ -11,5 +11,6 @@ COPY . ${DOCKER_SCRIPTS}
 COPY --from=numericalpdes/base_images:mpi4py /usr/local /usr/local
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
+    apt install -y -qq zlib1g-dev && \
     cd ${INSTALL_SCRIPTS} && bash h5py/build.sh && cd - && \
     cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -

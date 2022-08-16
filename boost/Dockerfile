@@ -10,5 +10,6 @@ MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
+    apt install -y -qq zlib1g-dev && \
     cd ${INSTALL_SCRIPTS} && bash boost/build.sh && cd - && \
     cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -
