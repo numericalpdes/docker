@@ -15,6 +15,11 @@ on:
       args:
         description: "Additional space separated arguments to be passed to the build script. If empty, no arguments are passed"
         type: string
+    secrets:
+      CI_REGISTRY_USER:
+        description: "Docker Hub username"
+      CI_REGISTRY_PASSWORD:
+        description: "Token that enables writing to Docker Hub"
 
 jobs:
   release:
