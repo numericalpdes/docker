@@ -12,7 +12,7 @@ WORKDIR /tmp/docker_repo
 
 RUN . scripts/docker_pre.sh && \
     bash base/build.sh && \
+    echo "export PATH=\"${INSTALL_PREFIX}/bin:${PATH}\"" >> /etc/profile && \
+    echo "export LD_LIBRARY_PATH=\"${INSTALL_PREFIX}/lib:${LD_LIBRARY_PATH}\"" >> /etc/profile && \
+    echo "export PYTHONPATH=\"${INSTALL_PREFIX}/lib/${PYTHON_VERSION}/dist-packages:${INSTALL_PREFIX}/lib/${PYTHON_VERSION}/site-packages:${PYTHONPATH}\"" >> /etc/profile && \
     . scripts/docker_post.sh
-
-RUN echo "export OMPI_ALLOW_RUN_AS_ROOT=1" >> ~/.bashrc && \
-    echo "export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1" >> ~/.bashrc
