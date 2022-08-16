@@ -7,11 +7,8 @@
 FROM numericalpdes/base_images:base
 MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
-COPY . /usr/local/share/numerical-pdes-docker
-WORKDIR /usr/local/share/numerical-pdes-docker
+COPY . ${DOCKER_SCRIPTS}
 
-RUN . scripts/docker_pre.sh && \
-    cd ${INSTALL_SCRIPTS} && \
-    bash occ/build.sh && \
-    cd - && \
-    . scripts/docker_post.sh
+RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
+    cd ${INSTALL_SCRIPTS} && bash occ/build.sh && cd - && \
+    cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -

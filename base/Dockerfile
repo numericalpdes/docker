@@ -7,12 +7,15 @@
 FROM ubuntu:rolling AS base
 MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
-COPY . /usr/local/share/numerical-pdes-docker
-WORKDIR /usr/local/share/numerical-pdes-docker
+ENV DOCKER_SCRIPTS=/usr/local/share/numerical-pdes-docker
+COPY . ${DOCKER_SCRIPTS}
 
-RUN . scripts/docker_pre.sh && \
+RUN cd ${DOCKER_SCRIPTS} && \
+    . scripts/docker_pre.sh && \
     bash base/build.sh && \
+    echo "export DOCKER_SCRIPTS=${DOCKER_SCRIPTS}" >> /etc/profile && \
     echo "export PATH=\"${INSTALL_PREFIX}/bin:${PATH}\"" >> /etc/profile && \
     echo "export LD_LIBRARY_PATH=\"${INSTALL_PREFIX}/lib:${LD_LIBRARY_PATH}\"" >> /etc/profile && \
     echo "export PYTHONPATH=\"${INSTALL_PREFIX}/lib/${PYTHON_VERSION}/dist-packages:${INSTALL_PREFIX}/lib/${PYTHON_VERSION}/site-packages:${PYTHONPATH}\"" >> /etc/profile && \
-    . scripts/docker_post.sh
+    . scripts/docker_post.sh && \
+    cd -
