@@ -29,8 +29,7 @@ jobs:
       - name: Test docker image
         run: |
           LIBRARY=${{ (inputs || github.event.inputs).library }}
-          docker run -i --rm numericalpdes/base_images:${LIBRARY} bash -c "cd /usr/local/share/fem-on-colab && wget https://github.com/multiphenics/nbvalx/raw/main/tests/notebooks/conftest.py -O ${LIBRARY}/conftest.py && pytest --nbval-cell-timeout=300 ${LIBRARY}/"
-        shell: bash
+          docker run -i --rm numericalpdes/base_images:${LIBRARY} bash -c "cd /usr/local/share/fem-on-colab && if [ -d ${LIBRARY} ]; then wget https://github.com/multiphenics/nbvalx/raw/main/tests/notebooks/conftest.py -O ${LIBRARY}/conftest.py && pytest --nbval-cell-timeout=300 ${LIBRARY}/; fi"
       - name: Log into the docker registry
         if: github.repository == 'numerical-pdes/docker'
         run: docker login -u ${{ secrets.CI_REGISTRY_USER }} -p ${{ secrets.CI_REGISTRY_PASSWORD }}
