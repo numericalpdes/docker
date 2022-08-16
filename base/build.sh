@@ -31,5 +31,6 @@ pip3 install sympy
 # jupyter (for testing)
 pip3 install jupyter
 
-# pytest and nbval (for testing)
+# pytest, nbval and nbvalx (for testing)
 pip3 install nbval pytest
+pip3 install --no-dependencies git+https://github.com/multiphenics/nbvalx.git
