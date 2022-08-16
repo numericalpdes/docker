@@ -10,6 +10,9 @@ set -x
 # Common
 apt install -y -qq autoconf bison build-essential cmake curl flex git jq libtool pkg-config rsync software-properties-common unzip wget
 
+# gcc
+apt install -y gcc g++ gfortran
+
 # pip
 apt install -y -qq python3-pip
 
