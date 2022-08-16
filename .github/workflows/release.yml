@@ -37,4 +37,9 @@ jobs:
         if: github.repository == 'numerical-pdes/docker'
         run: |
           LIBRARY=${{ (inputs || github.event.inputs).library }}
-          docker push numericalpdes/base_images:${LIBRARY}
+          ARGS="${{ (inputs || github.event.inputs).args }}"
+          if [ -z "${ARGS}" ]; then
+            docker push numericalpdes/base_images:${LIBRARY}
+          else
+            docker push numericalpdes/base_images:${LIBRARY}-${ARGS}
+          fi
