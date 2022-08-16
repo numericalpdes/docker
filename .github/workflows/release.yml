@@ -55,8 +55,9 @@ jobs:
       - name: Test docker image
         run: |
           LIBRARY=${{ (inputs || github.event.inputs).library }}
+          ARGS="${{ (inputs || github.event.inputs).args }}"
           IMAGE_NAME="${{ steps.image_name.outputs.image_name }}"
-          docker run -i --rm ${IMAGE_NAME} bash -c "cd /usr/local/share/fem-on-colab && if [ -d ${LIBRARY} ]; then wget https://github.com/multiphenics/nbvalx/raw/main/tests/notebooks/conftest.py -O ${LIBRARY}/conftest.py && pytest --nbval-cell-timeout=300 ${LIBRARY}/; fi"
+          docker run -i --rm ${IMAGE_NAME} bash -c "cd /usr/local/share/fem-on-colab && if [ -d ${LIBRARY} ]; then wget https://github.com/multiphenics/nbvalx/raw/main/tests/notebooks/conftest.py -O ${LIBRARY}/conftest.py && ARGS="${ARGS}" pytest --nbval-cell-timeout=300 ${LIBRARY}/; fi"
       - name: Create an archive of test directory in case of failure
         if: failure() || cancelled()
         run: |
