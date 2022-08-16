@@ -1,0 +1,15 @@
+# Copyright (C) 2022 by the Hands On Numerical PDEs authors
+#
+# This file is part of Hands On Numerical PDEs.
+#
+# SPDX-License-Identifier: MIT
+
+# Clean up apt
+apt -qq clean
+rm -rf /var/lib/apt/lists/*
+
+# Clean up caches and temporary folders
+/tmp/* /var/tmp/* /root/.cache
+
+# Remove python symbolic link
+rm ${INSTALL_PREFIX}/lib/python3.7
