@@ -26,10 +26,26 @@ jobs:
           LIBRARY=${{ (inputs || github.event.inputs).library }}
           ARGS="${{ (inputs || github.event.inputs).args }}"
           docker build --pull -t numericalpdes/base_images:${LIBRARY} -f ${LIBRARY}/Dockerfile --build-arg ARGS=${ARGS} .
+      - name: Create an archive of build directory in case of failure
+        if: failure() || cancelled()
+        run: |
+          FAILED_CONTAINER=$(docker ps -l -q)
+          docker cp ${FAILED_CONTAINER}:/tmp /tmp/build-failure
+          if compgen -G "/tmp/build-failure/*-src" > /dev/null; then
+            tar czf build.tar.gz /tmp/build-failure/*-src
+          fi
+        shell: bash
       - name: Test docker image
         run: |
           LIBRARY=${{ (inputs || github.event.inputs).library }}
           docker run -i --rm numericalpdes/base_images:${LIBRARY} bash -c "cd /usr/local/share/fem-on-colab && if [ -d ${LIBRARY} ]; then wget https://github.com/multiphenics/nbvalx/raw/main/tests/notebooks/conftest.py -O ${LIBRARY}/conftest.py && pytest --nbval-cell-timeout=300 ${LIBRARY}/; fi"
+      - name: Create an archive of test directory in case of failure
+        if: failure() || cancelled()
+        run: |
+          LIBRARY=${{ (inputs || github.event.inputs).library }}
+          FAILED_CONTAINER=$(docker ps -l -q)
+          docker cp ${FAILED_CONTAINER}:/usr/local/share/fem-on-colab/${LIBRARY} /tmp/test-failure
+          tar czf test.tar.gz /tmp/test-failure
       - name: Log into the docker registry
         if: github.repository == 'numerical-pdes/docker'
         run: docker login -u ${{ secrets.CI_REGISTRY_USER }} -p ${{ secrets.CI_REGISTRY_PASSWORD }}
@@ -43,14 +59,11 @@ jobs:
           else
             docker push numericalpdes/base_images:${LIBRARY}-${ARGS}
           fi
-      - name: Create an archive of test directory in case of failure
-        if: failure() || cancelled()
-        run: |
-          tar czf test.tar.gz /usr/local/share/fem-on-colab/${{ (inputs || github.event.inputs).library }}
       - name: Upload archive as an artifact in case of failure
         if: failure() || cancelled()
         uses: actions/upload-artifact@v2
         with:
           name: "artifact ${{ (inputs || github.event.inputs).library }} ${{ (inputs || github.event.inputs).args }}"
           path: |
+            build.tar.gz
             test.tar.gz
