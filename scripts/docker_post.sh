@@ -11,5 +11,10 @@ rm -rf /var/lib/apt/lists/*
 # Clean up caches and temporary folders
 rm -rf /tmp/* /var/tmp/* /root/.cache
 
+# Undo temporary changes in FEM on Colab repository
+cd ${INSTALL_SCRIPTS}
+git reset --hard
+cd -
+
 # Remove python symbolic link
 rm ${INSTALL_PREFIX}/lib/python3.7
