@@ -7,6 +7,9 @@
 FROM ubuntu:rolling AS base
 MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
+COPY . /tmp/docker_repo
+WORKDIR /tmp/docker_repo
+
 RUN . scripts/docker_pre.sh && \
     bash base/build.sh && \
     . scripts/docker_post.sh
