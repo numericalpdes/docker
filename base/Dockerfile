@@ -7,15 +7,18 @@
 FROM ubuntu:rolling AS base
 MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
-ENV DOCKER_SCRIPTS=/usr/local/share/numerical-pdes-docker
+ENV INSTALL_PREFIX=/usr/local \
+    INSTALL_SCRIPTS=/usr/local/share/fem-on-colab \
+    DOCKER_SCRIPTS=/usr/local/share/numerical-pdes-docker
+
 COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && \
     . scripts/docker_pre.sh && \
     bash base/build.sh && \
-    echo "export DOCKER_SCRIPTS=${DOCKER_SCRIPTS}" >> /etc/profile && \
-    echo "export PATH=\"${INSTALL_PREFIX}/bin:${PATH}\"" >> /etc/profile && \
-    echo "export LD_LIBRARY_PATH=\"${INSTALL_PREFIX}/lib:${LD_LIBRARY_PATH}\"" >> /etc/profile && \
-    echo "export PYTHONPATH=\"${INSTALL_PREFIX}/lib/${PYTHON_VERSION}/dist-packages:${INSTALL_PREFIX}/lib/${PYTHON_VERSION}/site-packages:${PYTHONPATH}\"" >> /etc/profile && \
     . scripts/docker_post.sh && \
     cd -
+
+ENV PATH="${INSTALL_PREFIX}/bin:${PATH}" \
+    LD_LIBRARY_PATH="${INSTALL_PREFIX}/lib:${LD_LIBRARY_PATH}" \
+    PYTHONPATH="${INSTALL_PREFIX}/lib/python3/dist-packages:${INSTALL_PREFIX}/lib/python3/site-packages:${PYTHONPATH}"
