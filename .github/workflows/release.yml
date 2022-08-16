@@ -32,13 +32,13 @@ jobs:
         run: |
           LIBRARY=${{ (inputs || github.event.inputs).library }}
           ARGS="${{ (inputs || github.event.inputs).args }}"
-          docker build --pull -e INSTALL_SCRIPTS=${INSTALL_SCRIPTS} -V ${INSTALL_SCRIPTS}:${INSTALL_SCRIPTS} -t numericalpdes/base_images:${LIBRARY} -f ${LIBRARY}/Dockerfile --build-arg args=${ARGS} .
+          docker build --pull -t numericalpdes/base_images:${LIBRARY} -f ${LIBRARY}/Dockerfile --build-arg ARGS=${ARGS} --build-arg INSTALL_SCRIPTS_ARG=${INSTALL_SCRIPTS} .
         shell: bash
       - name: Test docker image
         run: |
           LIBRARY=${{ (inputs || github.event.inputs).library }}
           if [[ -f ${INSTALL_SCRIPTS}/${LIBRARY}/build.sh ]]; then
-            docker run -i -e INSTALL_SCRIPTS=${INSTALL_SCRIPTS} -V ${INSTALL_SCRIPTS}:${INSTALL_SCRIPTS} --rm numericalpdes/base_images:${LIBRARY} bash -c "pip3 install --no-dependencies git+https://github.com/multiphenics/nbvalx.git && cd ${INSTALL_SCRIPTS} && wget https://github.com/multiphenics/nbvalx/raw/main/tests/notebooks/conftest.py -O ${LIBRARY}/conftest.py && pytest --nbval-cell-timeout=300 ${LIBRARY}/"
+            docker run -i -v ${INSTALL_SCRIPTS}:${INSTALL_SCRIPTS} --rm numericalpdes/base_images:${LIBRARY} bash -c "pip3 install --no-dependencies git+https://github.com/multiphenics/nbvalx.git && cd ${INSTALL_SCRIPTS} && wget https://github.com/multiphenics/nbvalx/raw/main/tests/notebooks/conftest.py -O ${LIBRARY}/conftest.py && pytest --nbval-cell-timeout=300 ${LIBRARY}/"
           fi
         shell: bash
       - name: Log into the docker registry
