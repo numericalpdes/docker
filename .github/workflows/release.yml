@@ -43,3 +43,14 @@ jobs:
           else
             docker push numericalpdes/base_images:${LIBRARY}-${ARGS}
           fi
+      - name: Create an archive of test directory in case of failure
+        if: failure() || cancelled()
+        run: |
+          tar czf test.tar.gz /usr/local/share/fem-on-colab/${{ (inputs || github.event.inputs).library }}
+      - name: Upload archive as an artifact in case of failure
+        if: failure() || cancelled()
+        uses: actions/upload-artifact@v2
+        with:
+          name: "artifact ${{ (inputs || github.event.inputs).library }} ${{ (inputs || github.event.inputs).args }}"
+          path: |
+            test.tar.gz
