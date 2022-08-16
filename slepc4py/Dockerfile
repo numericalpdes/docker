@@ -10,7 +10,7 @@ MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 ARG ARGS
 
 COPY . ${DOCKER_SCRIPTS}
-COPY --from=numericalpdes/base_images:petsc4py-${ARGS} /usr/local /usr/local
+COPY --from=numericalpdes/base_images:petsc4py-${ARGS} /usr /usr
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
     cd ${INSTALL_SCRIPTS} && bash slepc4py/build.sh ${ARGS} && cd - && \
