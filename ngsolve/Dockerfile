@@ -14,5 +14,5 @@ COPY --from=numericalpdes/base_images:pybind11 /usr /usr
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
     apt install -y -qq libfontconfig1 libgl1 && \
-    cd ${INSTALL_SCRIPTS} && truncate -s 0 ngsolve/patches/03-ngscxx-ngsld-static-libstdc++ && bash ngsolve/build.sh && cd - && \
+    cd ${INSTALL_SCRIPTS} && truncate -s 0 ngsolve/patches/03-ngscxx-ngsld-static-libstdc++ && sed -i 's|ln -s $INSTALL_PREFIX/lib/python3.7 $INSTALL_PREFIX/lib/python3||g' ngsolve/build.sh && sed -i 's|rm $INSTALL_PREFIX/lib/python3||g' ngsolve/build.sh && bash ngsolve/build.sh && cd - && \
     cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -
