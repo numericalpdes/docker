@@ -12,3 +12,11 @@ COPY --from=numericalpdes/base_images:fenicsx-real /usr /usr
 COPY --from=numericalpdes/base_images:firedrake-real /usr /usr
 COPY --from=numericalpdes/base_images:gmsh /usr /usr
 COPY --from=numericalpdes/base_images:ngsolve /usr /usr
+
+RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
+    pip3 install jupyterlab && \
+    cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -
+
+WORKDIR /root
+EXPOSE 8888/tcp
+ENTRYPOINT ["jupyter", "lab", "--ip", "0.0.0.0", "--no-browser", "--allow-root"]
