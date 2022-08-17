@@ -98,7 +98,15 @@ jobs:
 
   # numerical-pdes build
   build_numericalpdes:
-    if: github.repository == 'numerical-pdes/docker'
+    needs: [build_fenicsx_real, build_firedrake_real, build_gmsh, build_ngsolve]
+    if: >-
+      github.repository == 'numerical-pdes/docker' && (
+        (
+          github.event_name == 'schedule' && needs.build_fenicsx_real.result == 'success' && needs.build_firedrake_real.result == 'success' && needs.build_gmsh.result == 'success' && needs.build_ngsolve.result == 'success'
+        ) || (
+          github.event_name != 'schedule' && (needs.build_fenicsx_real.result == 'skipped' || needs.build_fenicsx_real.result == 'success') && (needs.build_firedrake_real.result == 'skipped' || needs.build_firedrake_real.result == 'success') && (needs.build_gmsh.result == 'skipped' || needs.build_gmsh.result == 'success') && (needs.build_ngsolve.result == 'skipped' || needs.build_ngsolve.result == 'success') && always()
+        )
+      )
     uses: numerical-pdes/docker/.github/workflows/combine_end_user.yml@main
     secrets:
       CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
