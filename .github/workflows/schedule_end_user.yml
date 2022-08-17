@@ -1,0 +1,109 @@
+name: Scheduled releases of end user packages
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+    inputs:
+      library:
+        description: "Library to build and test."
+  workflow_call:
+    inputs:
+      library:
+        description: "Library to build and test"
+        type: string
+    secrets:
+      CI_REGISTRY_USER:
+        description: "Docker Hub username"
+      CI_REGISTRY_PASSWORD:
+        description: "Token that enables writing to Docker Hub"
+
+jobs:
+  # FEniCS build
+  build_fenics:
+    if: github.repository == 'numerical-pdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'fenics')
+    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    with:
+      library: "fenics"
+      args: ""
+    secrets:
+      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
+      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
+
+  # FEniCSx/real build
+  build_fenicsx_real:
+    if: github.repository == 'numerical-pdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'fenicsx')
+    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    with:
+      library: "fenicsx"
+      args: "real"
+    secrets:
+      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
+      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
+
+  # FEniCSx/complex build
+  build_fenicsx_complex:
+    if: github.repository == 'numerical-pdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'fenicsx')
+    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    with:
+      library: "fenicsx"
+      args: "complex"
+    secrets:
+      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
+      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
+
+  # Firedrake/real build
+  build_firedrake_real:
+    if: github.repository == 'numerical-pdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'firedrake')
+    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    with:
+      library: "firedrake"
+      args: "real"
+    secrets:
+      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
+      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
+
+  # Firedrake/complex build
+  build_firedrake_complex:
+    if: github.repository == 'numerical-pdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'firedrake')
+    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    with:
+      library: "firedrake"
+      args: "complex"
+    secrets:
+      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
+      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
+
+  # Gmsh build
+  build_gmsh:
+    if: github.repository == 'numerical-pdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'gmsh')
+    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    with:
+      library: "gmsh"
+      args: ""
+    secrets:
+      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
+      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
+
+  # NGSolve build
+  build_ngsolve:
+    if: github.repository == 'numerical-pdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'ngsolve')
+    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    with:
+      library: "ngsolve"
+      args: ""
+    secrets:
+      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
+      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
+
+  # Warn if scheduled workflow is about to be disabled
+  warn:
+    runs-on: ubuntu-latest
+    if: github.repository == 'numerical-pdes/docker' && github.ref == 'refs/heads/main' && github.event_name == 'schedule'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Warn if scheduled workflow is about to be disabled
+        uses: fem-on-colab/warn-workflow-about-to-be-disabled-action@main
+        with:
+          workflow-filename: schedule_end_user.yml
+          days-elapsed: 50
