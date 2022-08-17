@@ -21,7 +21,7 @@ jobs:
           docker build --pull -t ${IMAGE_NAME} -f numerical-pdes/Dockerfile .
       - name: Test docker image
         run: |
-          docker run -i ${IMAGE_NAME} bash -c "cd /usr/local/share/fem-on-colab && wget https://github.com/multiphenics/nbvalx/raw/main/tests/notebooks/conftest.py -O conftest.py && pytest --nbval-cell-timeout=300 fenicsx/ firedrake/ gmsh/ ngsolve/; fi"
+          docker run -i ${IMAGE_NAME} bash -c "cd /usr/local/share/fem-on-colab && wget https://github.com/multiphenics/nbvalx/raw/main/tests/notebooks/conftest.py -O conftest.py && pytest --nbval-cell-timeout=300 fenicsx/ firedrake/ gmsh/ ngsolve/"
       - name: Create an archive of test directory in case of failure
         if: failure() || cancelled()
         run: |
