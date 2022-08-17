@@ -1,0 +1,12 @@
+#!/bin/bash
+if [[ -z "${PYTEST_CURRENT_TEST}" ]]; then
+    /usr/bin/ldd "$@"
+else
+    if [[ ${PYTEST_CURRENT_TEST} == "test-dolfin.ipynb"* ]] || [[ ${PYTEST_CURRENT_TEST} == "test-multiphenics.ipynb"* ]] || [[ ${PYTEST_CURRENT_TEST} == "test-rbnics.ipynb"* ]] || [[ ${PYTEST_CURRENT_TEST} == "test-dolfinx.ipynb"* ]]; then
+        # These tests have been hardcoded for the -static-libstdc++, and would give errors.
+        # Since statically linking is not relevant here, simply ignore the call.
+        exit 0
+    else
+        /usr/bin/ldd "$@"
+    fi
+fi

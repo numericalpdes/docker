@@ -15,7 +15,7 @@ COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && \
     . scripts/docker_pre.sh && \
-    bash base/build.sh && \
+    bash base/build.sh && cp base/bin/ldd ${INSTALL_PREFIX}/bin && \
     . scripts/docker_post.sh && \
     cd -
 
