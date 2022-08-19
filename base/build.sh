@@ -38,3 +38,6 @@ pip3 install jupyter
 # pytest, nbval and nbvalx (for testing)
 pip3 install nbval pytest
 pip3 install --no-dependencies git+https://github.com/multiphenics/nbvalx.git
+
+# X11 related packages
+apt install -y -qq libfontconfig1 libgl1 libgl1-mesa-dev libglu1-mesa libxrender1 libxcursor1  libxft2 libxinerama1 xvfb

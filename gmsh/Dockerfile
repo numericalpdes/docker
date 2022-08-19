@@ -12,6 +12,5 @@ COPY --from=numericalpdes/base_images:h5py /usr /usr
 COPY --from=numericalpdes/base_images:occ /usr /usr
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
-    apt install -y -qq libfontconfig1 libgl1 && \
     cd ${INSTALL_SCRIPTS} && bash gmsh/build.sh && cd - && \
     cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -
