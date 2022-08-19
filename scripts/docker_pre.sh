@@ -23,9 +23,7 @@ find ${INSTALL_SCRIPTS} -type f -name install.sh -exec truncate -s 0 {} \;
 
 # Create symbolic link for python installation path, due to hardcoded version in FEM on Colab scripts
 apt install -y -qq python3
-export PYTHON_VERSION=$(python3 -c "import sys; print('python{}.{}'.format(sys.version_info.major, sys.version_info.minor))")
 ln -s ${INSTALL_PREFIX}/lib/${PYTHON_VERSION} ${INSTALL_PREFIX}/lib/python3.7
-ln -fs ${INSTALL_PREFIX}/lib/${PYTHON_VERSION} ${INSTALL_PREFIX}/lib/python3
 
 # Increase verbosity
 export VERBOSE=1
