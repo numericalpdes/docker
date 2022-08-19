@@ -18,6 +18,12 @@ RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
     cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -
 
 WORKDIR /root
-EXPOSE 8888/tcp
+
 ENV SHELL /bin/bash
-ENTRYPOINT ["jupyter", "lab", "--ip", "0.0.0.0", "--no-browser", "--allow-root"]
+RUN echo "export PATH=${PATH}" >> .bashrc && \
+    echo "export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}" >> .bashrc && \
+    echo "export PYTHONPATH=${PYTHONPATH}" >> .bashrc && \
+    echo "#!/bin/bash" > run_jupyter && echo "jupyter lab --ip 0.0.0.0 --port 8888 --no-browser --allow-root" > run_jupyter && chmod ugo+x run_jupyter
+
+EXPOSE 8888/tcp
+ENTRYPOINT ["jupyter", "lab", "--ip", "0.0.0.0", "--port", "8888", "--no-browser", "--allow-root"]
