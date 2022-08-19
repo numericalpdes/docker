@@ -16,9 +16,13 @@ jobs:
       IMAGE_NAME: numericalpdes/numericalpdes:latest
     steps:
       - uses: actions/checkout@v3
+      - name: Enable experimental docker features
+        run: |
+          sudo sed -i 's/}/,"experimental": true}/' /etc/docker/daemon.json
+          sudo systemctl restart docker
       - name: Build docker image
         run: |
-          docker build --pull -t ${IMAGE_NAME} -f numerical-pdes/Dockerfile .
+          docker build --pull --squash -t ${IMAGE_NAME} -f numerical-pdes/Dockerfile .
       - name: Test docker image
         run: |
           docker run -i --entrypoint /usr/bin/env ${IMAGE_NAME} bash -c "cd /usr/local/share/fem-on-colab && wget https://github.com/multiphenics/nbvalx/raw/main/tests/notebooks/conftest.py -O conftest.py && pytest --nbval-cell-timeout=300 fenicsx/ firedrake/ gmsh/ ngsolve/"
