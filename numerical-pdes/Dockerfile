@@ -19,4 +19,5 @@ RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
 
 WORKDIR /root
 EXPOSE 8888/tcp
+ENV SHELL /bin/bash
 ENTRYPOINT ["jupyter", "lab", "--ip", "0.0.0.0", "--no-browser", "--allow-root"]
