@@ -66,10 +66,10 @@ jobs:
           docker cp ${FAILED_CONTAINER}:/usr/local/share/fem-on-colab/${LIBRARY} /tmp/test-failure
           tar czf test.tar.gz /tmp/test-failure
       - name: Log into the docker registry
-        if: github.repository == 'numerical-pdes/docker'
+        if: github.repository == 'numericalpdes/docker'
         run: docker login -u ${{ secrets.CI_REGISTRY_USER }} -p ${{ secrets.CI_REGISTRY_PASSWORD }}
       - name: Push to the docker registry
-        if: github.repository == 'numerical-pdes/docker'
+        if: github.repository == 'numericalpdes/docker'
         run: |
           IMAGE_NAME="${{ steps.image_name.outputs.image_name }}"
           docker push ${IMAGE_NAME}

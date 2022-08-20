@@ -22,7 +22,7 @@ jobs:
           sudo systemctl restart docker
       - name: Build docker image
         run: |
-          docker build --pull --squash -t ${IMAGE_NAME} -f numerical-pdes/Dockerfile .
+          docker build --pull --squash -t ${IMAGE_NAME} -f numericalpdes/dockerfile .
       - name: Test docker image
         run: |
           docker run -i --entrypoint /usr/bin/env ${IMAGE_NAME} bash -c "cd /usr/local/share/fem-on-colab && wget https://github.com/multiphenics/nbvalx/raw/main/tests/notebooks/conftest.py -O conftest.py && pytest --nbval-cell-timeout=300 fenicsx/ firedrake/ gmsh/ ngsolve/"
@@ -33,10 +33,10 @@ jobs:
           docker cp ${FAILED_CONTAINER}:/usr/local/share/fem-on-colab /tmp/test-failure
           tar czf test.tar.gz /tmp/test-failure
       - name: Log into the docker registry
-        if: github.repository == 'numerical-pdes/docker'
+        if: github.repository == 'numericalpdes/docker'
         run: docker login -u ${{ secrets.CI_REGISTRY_USER }} -p ${{ secrets.CI_REGISTRY_PASSWORD }}
       - name: Push to the docker registry
-        if: github.repository == 'numerical-pdes/docker'
+        if: github.repository == 'numericalpdes/docker'
         run: |
           docker push ${IMAGE_NAME}
       - name: Upload archive as an artifact in case of failure

@@ -21,8 +21,8 @@ on:
 jobs:
   # FEniCS build
   build_fenics:
-    if: github.repository == 'numerical-pdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'fenics')
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    if: github.repository == 'numericalpdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'fenics')
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "fenics"
       args: ""
@@ -32,8 +32,8 @@ jobs:
 
   # FEniCSx/real build
   build_fenicsx_real:
-    if: github.repository == 'numerical-pdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'fenicsx')
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    if: github.repository == 'numericalpdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'fenicsx')
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "fenicsx"
       args: "real"
@@ -43,8 +43,8 @@ jobs:
 
   # FEniCSx/complex build
   build_fenicsx_complex:
-    if: github.repository == 'numerical-pdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'fenicsx')
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    if: github.repository == 'numericalpdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'fenicsx')
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "fenicsx"
       args: "complex"
@@ -54,8 +54,8 @@ jobs:
 
   # Firedrake/real build
   build_firedrake_real:
-    if: github.repository == 'numerical-pdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'firedrake')
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    if: github.repository == 'numericalpdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'firedrake')
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "firedrake"
       args: "real"
@@ -65,8 +65,8 @@ jobs:
 
   # Firedrake/complex build
   build_firedrake_complex:
-    if: github.repository == 'numerical-pdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'firedrake')
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    if: github.repository == 'numericalpdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'firedrake')
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "firedrake"
       args: "complex"
@@ -76,8 +76,8 @@ jobs:
 
   # Gmsh build
   build_gmsh:
-    if: github.repository == 'numerical-pdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'gmsh')
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    if: github.repository == 'numericalpdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'gmsh')
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "gmsh"
       args: ""
@@ -87,8 +87,8 @@ jobs:
 
   # NGSolve build
   build_ngsolve:
-    if: github.repository == 'numerical-pdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'ngsolve')
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    if: github.repository == 'numericalpdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'ngsolve')
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "ngsolve"
       args: ""
@@ -96,18 +96,18 @@ jobs:
       CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
       CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
-  # numerical-pdes build
+  # numericalpdes build
   build_numericalpdes:
     needs: [build_fenicsx_real, build_firedrake_real, build_gmsh, build_ngsolve]
     if: >-
-      github.repository == 'numerical-pdes/docker' && (
+      github.repository == 'numericalpdes/docker' && (
         (
           github.event_name == 'schedule' && needs.build_fenicsx_real.result == 'success' && needs.build_firedrake_real.result == 'success' && needs.build_gmsh.result == 'success' && needs.build_ngsolve.result == 'success'
         ) || (
           github.event_name != 'schedule' && (needs.build_fenicsx_real.result == 'skipped' || needs.build_fenicsx_real.result == 'success') && (needs.build_firedrake_real.result == 'skipped' || needs.build_firedrake_real.result == 'success') && (needs.build_gmsh.result == 'skipped' || needs.build_gmsh.result == 'success') && (needs.build_ngsolve.result == 'skipped' || needs.build_ngsolve.result == 'success') && always()
         )
       )
-    uses: numerical-pdes/docker/.github/workflows/combine_end_user.yml@main
+    uses: numericalpdes/docker/.github/workflows/combine_end_user.yml@main
     secrets:
       CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
       CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
@@ -115,7 +115,7 @@ jobs:
   # Warn if scheduled workflow is about to be disabled
   warn:
     runs-on: ubuntu-latest
-    if: github.repository == 'numerical-pdes/docker' && github.ref == 'refs/heads/main' && github.event_name == 'schedule'
+    if: github.repository == 'numericalpdes/docker' && github.ref == 'refs/heads/main' && github.event_name == 'schedule'
     steps:
       - uses: actions/checkout@v3
       - name: Warn if scheduled workflow is about to be disabled

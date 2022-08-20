@@ -12,10 +12,10 @@ jobs:
   # Base image build
   build_base:
     if: >-
-      github.repository == 'numerical-pdes/docker' && (
+      github.repository == 'numericalpdes/docker' && (
         github.event_name == 'schedule' || github.event.inputs.library == 'base'
       )
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "base"
       args: ""
@@ -27,7 +27,7 @@ jobs:
   build_boost:
     needs: [build_base]
     if: >-
-      github.repository == 'numerical-pdes/docker' && (
+      github.repository == 'numericalpdes/docker' && (
         (
           github.event_name == 'schedule' && needs.build_base.result == 'success'
         ) || (
@@ -36,7 +36,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'boost' && needs.build_base.result == 'success' && always()
         )
       )
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "boost"
       args: ""
@@ -48,7 +48,7 @@ jobs:
   build_mpi4py:
     needs: [build_base]
     if: >-
-      github.repository == 'numerical-pdes/docker' && (
+      github.repository == 'numericalpdes/docker' && (
         (
           github.event_name == 'schedule' && needs.build_base.result == 'success'
         ) || (
@@ -57,7 +57,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'mpi4py' && needs.build_base.result == 'success' && always()
         )
       )
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "mpi4py"
       args: ""
@@ -69,7 +69,7 @@ jobs:
   build_occ:
     needs: [build_base]
     if: >-
-      github.repository == 'numerical-pdes/docker' && (
+      github.repository == 'numericalpdes/docker' && (
         (
           github.event_name == 'schedule' && needs.build_base.result == 'success'
         ) || (
@@ -78,7 +78,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'occ' && needs.build_base.result == 'success' && always()
         )
       )
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "occ"
       args: ""
@@ -90,7 +90,7 @@ jobs:
   build_vtk:
     needs: [build_base]
     if: >-
-      github.repository == 'numerical-pdes/docker' && (
+      github.repository == 'numericalpdes/docker' && (
         (
           github.event_name == 'schedule' && needs.build_base.result == 'success'
         ) || (
@@ -99,7 +99,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'vtk' && needs.build_base.result == 'success' && always()
         )
       )
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "vtk"
       args: ""
@@ -111,7 +111,7 @@ jobs:
   build_h5py:
     needs: [build_mpi4py]
     if: >-
-      github.repository == 'numerical-pdes/docker' && (
+      github.repository == 'numericalpdes/docker' && (
         (
           github.event_name == 'schedule' && needs.build_mpi4py.result == 'success'
         ) || (
@@ -120,7 +120,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'h5py' && needs.build_mpi4py.result == 'success' && always()
         )
       )
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "h5py"
       args: ""
@@ -132,7 +132,7 @@ jobs:
   build_pybind11:
     needs: [build_mpi4py]
     if: >-
-      github.repository == 'numerical-pdes/docker' && (
+      github.repository == 'numericalpdes/docker' && (
         (
           github.event_name == 'schedule' && needs.build_mpi4py.result == 'success'
         ) || (
@@ -141,7 +141,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'pybind11' && needs.build_mpi4py.result == 'success' && always()
         )
       )
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "pybind11"
       args: ""
@@ -153,7 +153,7 @@ jobs:
   build_itk:
     needs: [build_vtk]
     if: >-
-      github.repository == 'numerical-pdes/docker' && (
+      github.repository == 'numericalpdes/docker' && (
         (
           github.event_name == 'schedule' && needs.build_vtk.result == 'success'
         ) || (
@@ -162,7 +162,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'itk' && needs.build_vtk.result == 'success' && always()
         )
       )
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "itk"
       args: ""
@@ -174,7 +174,7 @@ jobs:
   build_petsc4py_real:
     needs: [build_h5py]
     if: >-
-      github.repository == 'numerical-pdes/docker' && (
+      github.repository == 'numericalpdes/docker' && (
         (
           github.event_name == 'schedule' && needs.build_h5py.result == 'success'
         ) || (
@@ -183,7 +183,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'petsc4py' && needs.build_h5py.result == 'success' && always()
         )
       )
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "petsc4py"
       args: "real"
@@ -195,7 +195,7 @@ jobs:
   build_petsc4py_complex:
     needs: [build_h5py]
     if: >-
-      github.repository == 'numerical-pdes/docker' && (
+      github.repository == 'numericalpdes/docker' && (
         (
           github.event_name == 'schedule' && needs.build_h5py.result == 'success'
         ) || (
@@ -204,7 +204,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'petsc4py' && needs.build_h5py.result == 'success' && always()
         )
       )
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "petsc4py"
       args: "complex"
@@ -216,7 +216,7 @@ jobs:
   build_slepc4py_real:
     needs: [build_petsc4py_real]
     if: >-
-      github.repository == 'numerical-pdes/docker' && (
+      github.repository == 'numericalpdes/docker' && (
         (
           github.event_name == 'schedule' && needs.build_petsc4py_real.result == 'success'
         ) || (
@@ -225,7 +225,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'slepc4py' && needs.build_petsc4py_real.result == 'success' && always()
         )
       )
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "slepc4py"
       args: "real"
@@ -237,7 +237,7 @@ jobs:
   build_slepc4py_complex:
     needs: [build_petsc4py_complex]
     if: >-
-      github.repository == 'numerical-pdes/docker' && (
+      github.repository == 'numericalpdes/docker' && (
         (
           github.event_name == 'schedule' && needs.build_petsc4py_complex.result == 'success'
         ) || (
@@ -246,7 +246,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'slepc4py' && needs.build_petsc4py_complex.result == 'success' && always()
         )
       )
-    uses: numerical-pdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "slepc4py"
       args: "complex"
@@ -257,7 +257,7 @@ jobs:
   # Warn if scheduled workflow is about to be disabled
   warn:
     runs-on: ubuntu-latest
-    if: github.repository == 'numerical-pdes/docker' && github.ref == 'refs/heads/main' && github.event_name == 'schedule'
+    if: github.repository == 'numericalpdes/docker' && github.ref == 'refs/heads/main' && github.event_name == 'schedule'
     steps:
       - uses: actions/checkout@v3
       - name: Warn if scheduled workflow is about to be disabled
