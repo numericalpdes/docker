@@ -9,11 +9,12 @@ on:
       CI_REGISTRY_PASSWORD:
         description: "Token that enables writing to Docker Hub"
 
+env:
+  IMAGE_NAME: numericalpdes/numericalpdes:latest
+
 jobs:
   release:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: numericalpdes/numericalpdes:latest
     steps:
       - uses: actions/checkout@v3
       - name: Enable experimental docker features
