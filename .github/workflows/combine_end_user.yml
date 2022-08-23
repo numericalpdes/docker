@@ -8,6 +8,16 @@ on:
         description: "Docker Hub username"
       CI_REGISTRY_PASSWORD:
         description: "Token that enables writing to Docker Hub"
+      WEB_USER:
+        description: "Username on the web server"
+      WEB_SSH_PRIVATE_KEY:
+        description: "Private key that enables writing to the web server"
+      WEB_SERVER:
+        description: "Fully qualified hostname of the web server for upload"
+      WEB_HOME:
+        description: "Local path on the web server where uploaded files should be stored"
+      WEB_URL:
+        description: "Public url of the web server where files can be downloaded from"
 
 env:
   IMAGE_NAME: numericalpdes/numericalpdes:latest
