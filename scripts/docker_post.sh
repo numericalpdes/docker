@@ -15,6 +15,3 @@ rm -rf /tmp/* /var/tmp/* /root/.cache
 cd ${INSTALL_SCRIPTS}
 git reset --hard
 cd -
-
-# Remove python symbolic link
-rm ${INSTALL_PREFIX}/lib/python3.7

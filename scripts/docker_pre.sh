@@ -21,10 +21,6 @@ fi
 # Temporarily clear out install.sh from FEM on Colab repository
 find ${INSTALL_SCRIPTS} -type f -name install.sh -exec truncate -s 0 {} \;
 
-# Create symbolic link for python installation path, due to hardcoded version in FEM on Colab scripts
-apt install -y -qq python3
-ln -s ${INSTALL_PREFIX}/lib/${PYTHON_VERSION} ${INSTALL_PREFIX}/lib/python3.7
-
 # Increase verbosity
 export VERBOSE=1
 export V=1
