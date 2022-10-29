@@ -15,7 +15,7 @@ jobs:
       github.repository == 'numericalpdes/docker' && (
         github.event_name == 'schedule' || github.event.inputs.library == 'base'
       )
-    uses: numericalpdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@update
     with:
       library: "base"
       args: ""
@@ -36,7 +36,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'boost' && needs.build_base.result == 'success' && always()
         )
       )
-    uses: numericalpdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@update
     with:
       library: "boost"
       args: ""
@@ -57,7 +57,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'mpi4py' && needs.build_base.result == 'success' && always()
         )
       )
-    uses: numericalpdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@update
     with:
       library: "mpi4py"
       args: ""
@@ -78,7 +78,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'occ' && needs.build_base.result == 'success' && always()
         )
       )
-    uses: numericalpdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@update
     with:
       library: "occ"
       args: ""
@@ -99,7 +99,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'vtk' && needs.build_base.result == 'success' && always()
         )
       )
-    uses: numericalpdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@update
     with:
       library: "vtk"
       args: ""
@@ -120,7 +120,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'h5py' && needs.build_mpi4py.result == 'success' && always()
         )
       )
-    uses: numericalpdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@update
     with:
       library: "h5py"
       args: ""
@@ -141,7 +141,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'pybind11' && needs.build_mpi4py.result == 'success' && always()
         )
       )
-    uses: numericalpdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@update
     with:
       library: "pybind11"
       args: ""
@@ -162,7 +162,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'itk' && needs.build_vtk.result == 'success' && always()
         )
       )
-    uses: numericalpdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@update
     with:
       library: "itk"
       args: ""
@@ -183,7 +183,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'petsc4py' && needs.build_h5py.result == 'success' && always()
         )
       )
-    uses: numericalpdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@update
     with:
       library: "petsc4py"
       args: "real"
@@ -204,7 +204,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'petsc4py' && needs.build_h5py.result == 'success' && always()
         )
       )
-    uses: numericalpdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@update
     with:
       library: "petsc4py"
       args: "complex"
@@ -225,7 +225,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'slepc4py' && needs.build_petsc4py_real.result == 'success' && always()
         )
       )
-    uses: numericalpdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@update
     with:
       library: "slepc4py"
       args: "real"
@@ -246,7 +246,7 @@ jobs:
           github.event_name != 'schedule' && github.event.inputs.library != 'slepc4py' && needs.build_petsc4py_complex.result == 'success' && always()
         )
       )
-    uses: numericalpdes/docker/.github/workflows/release.yml@main
+    uses: numericalpdes/docker/.github/workflows/release.yml@update
     with:
       library: "slepc4py"
       args: "complex"
