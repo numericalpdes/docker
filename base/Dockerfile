@@ -16,9 +16,9 @@ COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && \
     . scripts/docker_pre.sh && \
+    bash base/build.sh && cp base/bin/ldd ${INSTALL_PREFIX}/bin && \
     PYTHON_VERSION_CHECK=$(python3 -c "import sys; print('python{}.{}'.format(sys.version_info.major, sys.version_info.minor))") && \
     [ "${PYTHON_VERSION_CHECK}" = "${PYTHON_VERSION}" ] && \
-    bash base/build.sh && cp base/bin/ldd ${INSTALL_PREFIX}/bin && \
     . scripts/docker_post.sh && \
     cd -
 
