@@ -13,5 +13,5 @@ COPY --from=numericalpdes/base_images:petsc4py-real /usr /usr
 COPY --from=numericalpdes/base_images:pybind11 /usr /usr
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
-    cd ${INSTALL_SCRIPTS} && truncate -s 0 ngsolve/patches/03-ngscxx-ngsld-static-libstdc++ && bash ngsolve/build.sh && cd - && \
+    cd ${INSTALL_SCRIPTS} && bash ngsolve/build.sh && cd - && \
     cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -

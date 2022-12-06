@@ -19,5 +19,5 @@ COPY --from=numericalpdes/base_images:pybind11 /usr /usr
 COPY --from=slepc4py_args /usr /usr
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
-    cd ${INSTALL_SCRIPTS} && truncate -s 0 fenicsx/patches/01-ffcx-cffi-static-libstdc++ fenicsx/patches/02-cppimport-static-libstdc++ && bash fenicsx/build.sh ${ARGS} && cd - && \
+    cd ${INSTALL_SCRIPTS} && bash fenicsx/build.sh ${ARGS} && cd - && \
     cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -
