@@ -86,27 +86,6 @@ jobs:
       CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
       CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
-  # vtk build
-  build_vtk:
-    needs: [build_base]
-    if: >-
-      github.repository == 'numericalpdes/docker' && (
-        (
-          github.event_name == 'schedule' && needs.build_base.result == 'success'
-        ) || (
-          github.event_name != 'schedule' && github.event.inputs.library == 'vtk' && needs.build_base.result == 'skipped' && always()
-        ) || (
-          github.event_name != 'schedule' && github.event.inputs.library != 'vtk' && needs.build_base.result == 'success' && always()
-        )
-      )
-    uses: numericalpdes/docker/.github/workflows/release.yml@main
-    with:
-      library: "vtk"
-      args: ""
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
-
   # h5py build
   build_h5py:
     needs: [build_mpi4py]
@@ -144,27 +123,6 @@ jobs:
     uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "pybind11"
-      args: ""
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
-
-  # itk build
-  build_itk:
-    needs: [build_vtk]
-    if: >-
-      github.repository == 'numericalpdes/docker' && (
-        (
-          github.event_name == 'schedule' && needs.build_vtk.result == 'success'
-        ) || (
-          github.event_name != 'schedule' && github.event.inputs.library == 'itk' && needs.build_vtk.result == 'skipped' && always()
-        ) || (
-          github.event_name != 'schedule' && github.event.inputs.library != 'itk' && needs.build_vtk.result == 'success' && always()
-        )
-      )
-    uses: numericalpdes/docker/.github/workflows/release.yml@main
-    with:
-      library: "itk"
       args: ""
     secrets:
       CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
@@ -208,6 +166,27 @@ jobs:
     with:
       library: "petsc4py"
       args: "complex"
+    secrets:
+      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
+      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
+
+  # vtk build
+  build_vtk:
+    needs: [build_h5py]
+    if: >-
+      github.repository == 'numericalpdes/docker' && (
+        (
+          github.event_name == 'schedule' && needs.build_h5py.result == 'success'
+        ) || (
+          github.event_name != 'schedule' && github.event.inputs.library == 'vtk' && needs.build_h5py.result == 'skipped' && always()
+        ) || (
+          github.event_name != 'schedule' && github.event.inputs.library != 'vtk' && needs.build_h5py.result == 'success' && always()
+        )
+      )
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
+    with:
+      library: "vtk"
+      args: ""
     secrets:
       CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
       CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}

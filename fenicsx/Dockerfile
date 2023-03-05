@@ -14,7 +14,7 @@ ARG ARGS
 
 COPY . ${DOCKER_SCRIPTS}
 COPY --from=numericalpdes/base_images:boost /usr /usr
-COPY --from=numericalpdes/base_images:itk /usr /usr
+COPY --from=numericalpdes/base_images:vtk /usr /usr
 COPY --from=numericalpdes/base_images:pybind11 /usr /usr
 COPY --from=slepc4py_args /usr /usr
 
