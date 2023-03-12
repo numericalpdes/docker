@@ -15,6 +15,8 @@ apt install -y gcc g++ gfortran
 
 # pip
 apt install -y -qq python3-pip
+python3 -m pip install --upgrade pip
+apt remove -y -qq python3-pip
 
 # Numpy
 pip3 install numpy
