@@ -19,26 +19,26 @@ python3 -m pip install --upgrade pip
 apt remove -y -qq python3-pip
 
 # Numpy
-pip3 install numpy
+python3 -m pip install numpy
 
 # matplotlib
-pip3 install matplotlib
+python3 -m pip install matplotlib
 
 # scipy
-pip3 install scipy
+python3 -m pip install scipy
 
 # Cython
-pip3 install Cython
+python3 -m pip install Cython
 
 # sympy
-pip3 install sympy
+python3 -m pip install sympy
 
 # jupyter (for testing)
-pip3 install jupyter
+python3 -m pip install jupyter
 
 # pytest, nbval and nbvalx (for testing)
-pip3 install nbval pytest
-pip3 install --no-dependencies git+https://github.com/multiphenics/nbvalx.git
+python3 -m pip install nbval pytest
+python3 -m pip install --no-dependencies git+https://github.com/multiphenics/nbvalx.git
 
 # X11 related packages
 apt install -y -qq libfontconfig1 libgl1 libgl1-mesa-dev libglu1-mesa libxrender1 libxcursor1  libxft2 libxinerama1 xvfb
