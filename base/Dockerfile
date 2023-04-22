@@ -10,7 +10,7 @@ MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 ENV INSTALL_PREFIX=/usr/local \
     INSTALL_SCRIPTS=/usr/local/share/fem-on-colab \
     DOCKER_SCRIPTS=/usr/local/share/numerical-pdes-docker \
-    PYTHON_VERSION=python3.10
+    PYTHON_VERSION=python3.11
 
 COPY . ${DOCKER_SCRIPTS}
 
