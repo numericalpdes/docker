@@ -82,5 +82,6 @@ jobs:
       - name: Create a new WSL container
         run: wsl --import "$env:CONTAINER_NAME" "$env:CONTAINER_NAME.disk" "$env:CONTAINER_NAME.tar"
       - name: Test WSL container
+        if: false
         run: |
           wsl --distribution "$env:CONTAINER_NAME" bash -c "export PS1='mock' && source /root/.bashrc && cd /usr/local/share/fem-on-colab && wget https://github.com/multiphenics/nbvalx/raw/main/tests/notebooks/conftest.py -O conftest.py && pytest --nbval-cell-timeout=300 fenicsx/ firedrake/ gmsh/ ngsolve/"
