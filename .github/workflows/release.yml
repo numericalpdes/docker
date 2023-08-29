@@ -42,7 +42,7 @@ jobs:
           LIBRARY=${{ (inputs || github.event.inputs).library }}
           ARGS="${{ (inputs || github.event.inputs).args }}"
           IMAGE_NAME="${{ steps.image_name.outputs.image_name }}"
-          docker build --pull -t ${IMAGE_NAME} -f ${LIBRARY}/Dockerfile --build-arg ARGS=${ARGS} .
+          DOCKER_BUILDKIT=0 docker build --pull -t ${IMAGE_NAME} -f ${LIBRARY}/Dockerfile --build-arg ARGS=${ARGS} .
       - name: Create an archive of build directory in case of failure
         if: failure() || cancelled()
         run: |
