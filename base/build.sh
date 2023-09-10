@@ -27,7 +27,7 @@ python3 -m pip install matplotlib
 python3 -m pip install scipy
 
 # Cython
-python3 -m pip install "Cython<3.0"
+python3 -m pip install Cython
 
 # sympy
 python3 -m pip install sympy
