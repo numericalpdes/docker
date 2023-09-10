@@ -9,8 +9,8 @@ MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
 ARG ARGS
 
-COPY . ${DOCKER_SCRIPTS}
 COPY --from=numericalpdes/base_images:h5py /usr /usr
+COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
     apt install -y -qq libblas-dev libcurl4-openssl-dev liblapack-dev libxml2-dev && \

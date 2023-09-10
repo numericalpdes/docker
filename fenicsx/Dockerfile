@@ -12,11 +12,11 @@ MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
 ARG ARGS
 
-COPY . ${DOCKER_SCRIPTS}
 COPY --from=numericalpdes/base_images:boost /usr /usr
 COPY --from=numericalpdes/base_images:vtk /usr /usr
 COPY --from=numericalpdes/base_images:pybind11 /usr /usr
 COPY --from=slepc4py_args /usr /usr
+COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
     cd ${INSTALL_SCRIPTS} && bash fenicsx/build.sh ${ARGS} && cd - && \

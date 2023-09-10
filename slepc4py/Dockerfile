@@ -12,8 +12,8 @@ MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
 ARG ARGS
 
-COPY . ${DOCKER_SCRIPTS}
 COPY --from=petsc4py_args /usr /usr
+COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
     cd ${INSTALL_SCRIPTS} && bash slepc4py/build.sh ${ARGS} && cd - && \

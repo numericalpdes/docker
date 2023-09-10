@@ -7,8 +7,8 @@
 FROM numericalpdes/base_images:base
 MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
-COPY . ${DOCKER_SCRIPTS}
 COPY --from=numericalpdes/base_images:mpi4py /usr /usr
+COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
     apt install -y -qq zlib1g-dev && \

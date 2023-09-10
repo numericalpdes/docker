@@ -7,10 +7,10 @@
 FROM numericalpdes/base_images:base
 MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
-COPY . ${DOCKER_SCRIPTS}
 COPY --from=numericalpdes/base_images:boost /usr /usr
 COPY --from=numericalpdes/base_images:pybind11 /usr /usr
 COPY --from=numericalpdes/base_images:slepc4py-real /usr /usr
+COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
     cd ${INSTALL_SCRIPTS} && bash fenics/build.sh && cd - && \
