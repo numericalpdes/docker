@@ -6,7 +6,7 @@
 
 # Prepare apt
 export DEBIAN_FRONTEND="noninteractive"
-apt -y -qq update
+apt update -y -q
 
 # Clone FEM on Colab repository
 apt install -y -qq git
