@@ -104,7 +104,7 @@ jobs:
         (
           github.event_name == 'schedule' && needs.build_fenicsx_real.result == 'success' && needs.build_firedrake_real.result == 'success' && needs.build_gmsh.result == 'success' && needs.build_ngsolve.result == 'success'
         ) || (
-          github.event_name != 'schedule' && (needs.build_fenicsx_real.result == 'skipped' || needs.build_fenicsx_real.result == 'success') && (needs.build_firedrake_real.result == 'skipped' || needs.build_firedrake_real.result == 'success') && (needs.build_gmsh.result == 'skipped' || needs.build_gmsh.result == 'success') && (needs.build_ngsolve.result == 'skipped' || needs.build_ngsolve.result == 'success') && always()
+          github.event_name != 'schedule' && (needs.build_fenicsx_real.result == 'skipped' || needs.build_fenicsx_real.result == 'success') && (needs.build_firedrake_real.result == 'skipped' || needs.build_firedrake_real.result == 'success') && (needs.build_gmsh.result == 'skipped' || needs.build_gmsh.result == 'success') && (needs.build_ngsolve.result == 'skipped' || needs.build_ngsolve.result == 'success') && always() && !cancelled()
         )
       )
     uses: numericalpdes/docker/.github/workflows/combine_end_user.yml@main
