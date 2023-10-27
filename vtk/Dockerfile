@@ -11,5 +11,5 @@ COPY --from=numericalpdes/base_images:h5py /usr /usr
 COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
-    cd ${INSTALL_SCRIPTS} && ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6 $INSTALL_PREFIX/lib/libstdc++.so && bash vtk/build.sh && cd - && \
+    cd ${INSTALL_SCRIPTS} && bash vtk/build.sh && cd - && \
     cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -
