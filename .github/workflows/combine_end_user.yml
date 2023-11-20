@@ -35,7 +35,7 @@ jobs:
           remove-dotnet: 'true'
           remove-haskell: 'true'
           remove-codeql: 'true'
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Enable experimental docker features
         run: |
           sudo sed -i 's/}/,"experimental": true}/' /etc/docker/daemon.json
