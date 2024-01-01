@@ -1,4 +1,4 @@
-# Copyright (C) 2022-2023 by the Hands On Numerical PDEs authors
+# Copyright (C) 2022-2024 by the Hands On Numerical PDEs authors
 #
 # This file is part of Hands On Numerical PDEs.
 #
