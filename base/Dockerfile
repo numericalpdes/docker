@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-FROM ubuntu:rolling AS base
+FROM debian:testing AS base
 MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
 ENV INSTALL_PREFIX=/usr/local \
