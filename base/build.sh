@@ -35,9 +35,8 @@ python3 -m pip install sympy
 # jupyter (for testing)
 python3 -m pip install jupyter
 
-# pytest, nbval and nbvalx (for testing)
+# pytest and nbval (for testing)
 python3 -m pip install nbval pytest
-python3 -m pip install --no-dependencies git+https://github.com/multiphenics/nbvalx.git
 
 # X11 related packages
 apt install -y -qq libfontconfig1 libgl1 libgl1-mesa-dev libglu1-mesa libxrender1 libxcursor1  libxft2 libxinerama1 xvfb

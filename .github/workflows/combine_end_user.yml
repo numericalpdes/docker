@@ -45,7 +45,7 @@ jobs:
           DOCKER_BUILDKIT=0 docker build --pull --squash -t ${IMAGE_NAME} -f numericalpdes/Dockerfile .
       - name: Test docker image
         run: |
-          docker run -i --entrypoint /usr/bin/env ${IMAGE_NAME} bash -c "cd /usr/local/share/fem-on-colab && wget https://github.com/multiphenics/nbvalx/raw/main/tests/notebooks/conftest.py -O conftest.py && pytest --nbval-cell-timeout=300 fenicsx/ firedrake/ gmsh/ ngsolve/"
+          docker run -i --entrypoint /usr/bin/env ${IMAGE_NAME} bash -c "python3 -m pip install --no-dependencies nbvalx simpleeval && NBVALX_VERSION=\$(python3 -c 'import importlib.metadata; print(importlib.metadata.version(\"nbvalx\"))') && cd /usr/local/share/fem-on-colab && wget https://github.com/nbvalx/nbvalx/raw/v\${NBVALX_VERSION}/tests/notebooks/conftest.py -O conftest.py && pytest --nbval-cell-timeout=300 fenicsx/ firedrake/ gmsh/ ngsolve/"
       - name: Create an archive of test directory in case of failure
         if: failure() || cancelled()
         run: |
@@ -92,4 +92,4 @@ jobs:
       - name: Test WSL container
         if: false
         run: |
-          wsl --distribution "$env:CONTAINER_NAME" bash -c "export PS1='mock' && source /root/.bashrc && cd /usr/local/share/fem-on-colab && wget https://github.com/multiphenics/nbvalx/raw/main/tests/notebooks/conftest.py -O conftest.py && pytest --nbval-cell-timeout=300 fenicsx/ firedrake/ gmsh/ ngsolve/"
+          wsl --distribution "$env:CONTAINER_NAME" bash -c "export PS1='mock' && source /root/.bashrc && python3 -m pip install --no-dependencies nbvalx simpleeval && NBVALX_VERSION=\$(python3 -c 'import importlib.metadata; print(importlib.metadata.version(\"nbvalx\"))') && cd /usr/local/share/fem-on-colab && wget https://github.com/nbvalx/nbvalx/raw/v\${NBVALX_VERSION}/tests/notebooks/conftest.py -O conftest.py && pytest --nbval-cell-timeout=300 fenicsx/ firedrake/ gmsh/ ngsolve/"
