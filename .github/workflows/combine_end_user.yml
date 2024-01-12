@@ -2,7 +2,14 @@ name: Combine end user packages in a single docker image
 
 on:
   workflow_dispatch:
+    inputs:
+      scalar-type:
+        description: "PETSc scalar type"
   workflow_call:
+    inputs:
+      scalar-type:
+        description: "PETSc scalar type"
+        type: string
     secrets:
       CI_REGISTRY_USER:
         description: "Docker Hub username"
@@ -21,12 +28,20 @@ on:
 
 env:
   IMAGE_NAME: numericalpdes/numericalpdes:latest
-  CONTAINER_NAME: numericalpdes_numericalpdes
+  CONTAINER_NAME: numericalpdes
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Check scalar type
+        run: |
+          SCALAR_TYPE=${{ (inputs || github.event.inputs).scalar-type }}
+          if [[ "$SCALAR_TYPE" != "complex" && "$SCALAR_TYPE" != "real" ]]; then
+              echo "Expecting scalar type to be either real or complex, but got $SCALAR_TYPE"
+              exit 1
+          fi
+        shell: bash
       - name: Free up disk space
         uses: easimon/maximize-build-space@master
         with:
@@ -36,16 +51,19 @@ jobs:
           remove-haskell: 'true'
           remove-codeql: 'true'
       - uses: actions/checkout@v4
+
       - name: Enable experimental docker features
         run: |
           sudo sed -i 's/}/,"experimental": true}/' /etc/docker/daemon.json
           sudo systemctl restart docker
       - name: Build docker image
         run: |
-          DOCKER_BUILDKIT=0 docker build --pull --squash -t ${IMAGE_NAME} -f numericalpdes/Dockerfile .
+          SCALAR_TYPE=${{ (inputs || github.event.inputs).scalar-type }}
+          DOCKER_BUILDKIT=0 docker build --pull --squash -t ${IMAGE_NAME}-${SCALAR_TYPE} -f numericalpdes/Dockerfile --build-arg ARGS=${SCALAR_TYPE} .
       - name: Test docker image
         run: |
-          docker run -i --entrypoint /usr/bin/env ${IMAGE_NAME} bash -c "python3 -m pip install --no-dependencies nbvalx simpleeval && NBVALX_VERSION=\$(python3 -c 'import importlib.metadata; print(importlib.metadata.version(\"nbvalx\"))') && cd /usr/local/share/fem-on-colab && wget https://github.com/nbvalx/nbvalx/raw/v\${NBVALX_VERSION}/tests/notebooks/conftest.py -O conftest.py && pytest --nbval-cell-timeout=300 fenicsx/ firedrake/ gmsh/ ngsolve/"
+          SCALAR_TYPE=${{ (inputs || github.event.inputs).scalar-type }}
+          docker run -i --entrypoint /usr/bin/env ${IMAGE_NAME}-${SCALAR_TYPE} bash -c "python3 -m pip install --no-dependencies nbvalx simpleeval && NBVALX_VERSION=\$(python3 -c 'import importlib.metadata; print(importlib.metadata.version(\"nbvalx\"))') && cd /usr/local/share/fem-on-colab && wget https://github.com/nbvalx/nbvalx/raw/v\${NBVALX_VERSION}/tests/notebooks/conftest.py -O conftest.py && ARGS="${SCALAR_TYPE}" pytest --nbval-cell-timeout=300 fenicsx/ firedrake/ gmsh/ ngsolve/"
       - name: Create an archive of test directory in case of failure
         if: failure() || cancelled()
         run: |
@@ -58,7 +76,13 @@ jobs:
       - name: Push to the docker registry
         if: github.repository == 'numericalpdes/docker'
         run: |
-          docker push ${IMAGE_NAME}
+          SCALAR_TYPE=${{ (inputs || github.event.inputs).scalar-type }}
+          docker push ${IMAGE_NAME}-${SCALAR_TYPE}
+          if [[ "${SCALAR_TYPE}" == "real" ]]; then
+            docker tag ${IMAGE_NAME}-${SCALAR_TYPE} ${IMAGE_NAME}
+            docker push ${IMAGE_NAME}
+          fi
+        shell: bash
       - name: Upload archive as an artifact in case of failure
         if: failure() || cancelled()
         uses: actions/upload-artifact@v3
@@ -68,16 +92,18 @@ jobs:
             test.tar.gz
       - name: Export the docker image to a tar file
         run: |
-          docker run --entrypoint /usr/bin/env --name ${CONTAINER_NAME} ${IMAGE_NAME} /bin/bash
-          docker export --output=${CONTAINER_NAME}.tar ${CONTAINER_NAME}
+          SCALAR_TYPE=${{ (inputs || github.event.inputs).scalar-type }}
+          docker run --entrypoint /usr/bin/env --name ${CONTAINER_NAME}-${SCALAR_TYPE} ${IMAGE_NAME}-${SCALAR_TYPE} /bin/bash
+          docker export --output=${CONTAINER_NAME}-${SCALAR_TYPE}.tar ${CONTAINER_NAME}-${SCALAR_TYPE}
       - name: Upload to the web server
         if: github.repository == 'numericalpdes/docker'
         run: |
+          SCALAR_TYPE=${{ (inputs || github.event.inputs).scalar-type }}
           mkdir -p ~/.ssh
           echo "${{ secrets.WEB_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          scp -o StrictHostKeyChecking=no -o LogLevel=ERROR ${CONTAINER_NAME}.tar ${{ secrets.WEB_USER }}@${{ secrets.WEB_SERVER }}:${{ secrets.WEB_HOME }}/${CONTAINER_NAME}.tar.upl
-          ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR ${{ secrets.WEB_USER }}@${{ secrets.WEB_SERVER }} "cd ${{ secrets.WEB_HOME }} && chmod ugo+r ${CONTAINER_NAME}.tar.upl && mv ${CONTAINER_NAME}.tar.upl ${CONTAINER_NAME}.tar"
+          scp -o StrictHostKeyChecking=no -o LogLevel=ERROR ${CONTAINER_NAME}-${SCALAR_TYPE}.tar ${{ secrets.WEB_USER }}@${{ secrets.WEB_SERVER }}:${{ secrets.WEB_HOME }}/${CONTAINER_NAME}-${SCALAR_TYPE}.tar.upl
+          ssh -o StrictHostKeyChecking=no -o LogLevel=ERROR ${{ secrets.WEB_USER }}@${{ secrets.WEB_SERVER }} "cd ${{ secrets.WEB_HOME }} && chmod ugo+r ${CONTAINER_NAME}-${SCALAR_TYPE}.tar.upl && mv ${CONTAINER_NAME}-${SCALAR_TYPE}.tar.upl ${CONTAINER_NAME}-${SCALAR_TYPE}.tar"
 
   wsl:
     runs-on: windows-latest
@@ -85,11 +111,15 @@ jobs:
     steps:
       - name: Download archive containing the docker image
         run: |
+          SCALAR_TYPE=${{ (inputs || github.event.inputs).scalar-type }}
           Import-Module BitsTransfer
-          Start-BitsTransfer -Source "${{ secrets.WEB_URL }}/$env:CONTAINER_NAME.tar" -Destination "$env:CONTAINER_NAME.tar"
+          Start-BitsTransfer -Source "${{ secrets.WEB_URL }}/$env:CONTAINER_NAME-%SCALAR_TYPE%.tar" -Destination "$env:CONTAINER_NAME-%SCALAR_TYPE%.tar"
       - name: Create a new WSL container
-        run: wsl --import "$env:CONTAINER_NAME" "$env:CONTAINER_NAME.disk" "$env:CONTAINER_NAME.tar"
+        run: |
+          SCALAR_TYPE=${{ (inputs || github.event.inputs).scalar-type }}
+          wsl --import "$env:CONTAINER_NAME-%SCALAR_TYPE%" "$env:CONTAINER_NAME-%SCALAR_TYPE%.disk" "$env:CONTAINER_NAME-%SCALAR_TYPE%.tar"
       - name: Test WSL container
         if: false
         run: |
-          wsl --distribution "$env:CONTAINER_NAME" bash -c "export PS1='mock' && source /root/.bashrc && python3 -m pip install --no-dependencies nbvalx simpleeval && NBVALX_VERSION=\$(python3 -c 'import importlib.metadata; print(importlib.metadata.version(\"nbvalx\"))') && cd /usr/local/share/fem-on-colab && wget https://github.com/nbvalx/nbvalx/raw/v\${NBVALX_VERSION}/tests/notebooks/conftest.py -O conftest.py && pytest --nbval-cell-timeout=300 fenicsx/ firedrake/ gmsh/ ngsolve/"
+          SCALAR_TYPE=${{ (inputs || github.event.inputs).scalar-type }}
+          wsl --distribution "$env:CONTAINER_NAME-%SCALAR_TYPE%" bash -c "export PS1='mock' && source /root/.bashrc && python3 -m pip install --no-dependencies nbvalx simpleeval && NBVALX_VERSION=\$(python3 -c 'import importlib.metadata; print(importlib.metadata.version(\"nbvalx\"))') && cd /usr/local/share/fem-on-colab && wget https://github.com/nbvalx/nbvalx/raw/v\${NBVALX_VERSION}/tests/notebooks/conftest.py -O conftest.py && ARGS="%SCALAR_TYPE%" pytest --nbval-cell-timeout=300 fenicsx/ firedrake/ gmsh/ ngsolve/"

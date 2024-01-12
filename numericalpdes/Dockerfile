@@ -4,13 +4,20 @@
 #
 # SPDX-License-Identifier: MIT
 
+ARG ARGS
+FROM numericalpdes/base_images:fenicsx-${ARGS} as fenicsx_args
+FROM numericalpdes/base_images:firedrake-${ARGS} as firedrake_args
+FROM numericalpdes/base_images:ngsolve-${ARGS} as ngsolve_args
+
 FROM numericalpdes/base_images:base
 MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
-COPY --from=numericalpdes/base_images:fenicsx-real /usr /usr
-COPY --from=numericalpdes/base_images:firedrake-real /usr /usr
+ARG ARGS
+
+COPY --from=fenicsx_args /usr /usr
+COPY --from=firedrake_args /usr /usr
 COPY --from=numericalpdes/base_images:gmsh /usr /usr
-COPY --from=numericalpdes/base_images:ngsolve /usr /usr
+COPY --from=ngsolve_args /usr /usr
 COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
