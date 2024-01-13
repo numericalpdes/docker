@@ -4,14 +4,19 @@
 #
 # SPDX-License-Identifier: MIT
 
+ARG ARGS
+FROM numericalpdes/base_images:slepc4py-${ARGS} as slepc4py_args
+
 FROM numericalpdes/base_images:base
 MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
+ARG ARGS
+
 COPY --from=numericalpdes/base_images:occ /usr /usr
-COPY --from=numericalpdes/base_images:petsc4py-real /usr /usr
 COPY --from=numericalpdes/base_images:pybind11 /usr /usr
+COPY --from=slepc4py_args /usr /usr
 COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
-    cd ${INSTALL_SCRIPTS} && bash ngsolve/build.sh && cd - && \
+    cd ${INSTALL_SCRIPTS} && bash ngsolve/build.sh ${ARGS} && cd - && \
     cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -

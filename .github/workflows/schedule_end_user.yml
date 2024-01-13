@@ -25,7 +25,7 @@ jobs:
     uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "fenics"
-      args: ""
+      args: "real"
     secrets:
       CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
       CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
@@ -85,26 +85,38 @@ jobs:
       CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
       CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
-  # NGSolve build
-  build_ngsolve:
+  # NGSolve/real build
+  build_ngsolve_real:
     if: github.repository == 'numericalpdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'ngsolve')
     uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
       library: "ngsolve"
-      args: ""
+      args: "real"
     secrets:
       CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
       CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
+  # NGSolve/complex build
+  build_ngsolve_complex:
+    if: github.repository == 'numericalpdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'ngsolve')
+    uses: numericalpdes/docker/.github/workflows/release.yml@main
+    with:
+      library: "ngsolve"
+      args: "complex"
+    secrets:
+      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
+      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
+
+
   # numericalpdes build
   build_numericalpdes:
-    needs: [build_fenicsx_real, build_firedrake_real, build_gmsh, build_ngsolve]
+    needs: [build_fenicsx_real, build_firedrake_real, build_gmsh, build_ngsolve_real]
     if: >-
       github.repository == 'numericalpdes/docker' && (
         (
-          github.event_name == 'schedule' && needs.build_fenicsx_real.result == 'success' && needs.build_firedrake_real.result == 'success' && needs.build_gmsh.result == 'success' && needs.build_ngsolve.result == 'success'
+          github.event_name == 'schedule' && needs.build_fenicsx_real.result == 'success' && needs.build_firedrake_real.result == 'success' && needs.build_gmsh.result == 'success' && needs.build_ngsolve_real.result == 'success'
         ) || (
-          github.event_name != 'schedule' && (needs.build_fenicsx_real.result == 'skipped' || needs.build_fenicsx_real.result == 'success') && (needs.build_firedrake_real.result == 'skipped' || needs.build_firedrake_real.result == 'success') && (needs.build_gmsh.result == 'skipped' || needs.build_gmsh.result == 'success') && (needs.build_ngsolve.result == 'skipped' || needs.build_ngsolve.result == 'success') && always() && !cancelled()
+          github.event_name != 'schedule' && (needs.build_fenicsx_real.result == 'skipped' || needs.build_fenicsx_real.result == 'success') && (needs.build_firedrake_real.result == 'skipped' || needs.build_firedrake_real.result == 'success') && (needs.build_gmsh.result == 'skipped' || needs.build_gmsh.result == 'success') && (needs.build_ngsolve_real.result == 'skipped' || needs.build_ngsolve_real.result == 'success') && always() && !cancelled()
         )
       )
     uses: numericalpdes/docker/.github/workflows/combine_end_user.yml@main
