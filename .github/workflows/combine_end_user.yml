@@ -111,15 +111,15 @@ jobs:
     steps:
       - name: Download archive containing the docker image
         run: |
-          SCALAR_TYPE=${{ (inputs || github.event.inputs).scalar-type }}
+          $SCALAR_TYPE="${{ (inputs || github.event.inputs).scalar-type }}"
           Import-Module BitsTransfer
-          Start-BitsTransfer -Source "${{ secrets.WEB_URL }}/$env:CONTAINER_NAME-%SCALAR_TYPE%.tar" -Destination "$env:CONTAINER_NAME-%SCALAR_TYPE%.tar"
+          Start-BitsTransfer -Source "${{ secrets.WEB_URL }}/$env:CONTAINER_NAME-$SCALAR_TYPE.tar" -Destination "$env:CONTAINER_NAME-$SCALAR_TYPE.tar"
       - name: Create a new WSL container
         run: |
-          SCALAR_TYPE=${{ (inputs || github.event.inputs).scalar-type }}
-          wsl --import "$env:CONTAINER_NAME-%SCALAR_TYPE%" "$env:CONTAINER_NAME-%SCALAR_TYPE%.disk" "$env:CONTAINER_NAME-%SCALAR_TYPE%.tar"
+          $SCALAR_TYPE="${{ (inputs || github.event.inputs).scalar-type }}"
+          wsl --import "$env:CONTAINER_NAME-$SCALAR_TYPE" "$env:CONTAINER_NAME-$SCALAR_TYPE.disk" "$env:CONTAINER_NAME-$SCALAR_TYPE.tar"
+          Remove-Item -Path "$env:CONTAINER_NAME-$SCALAR_TYPE.tar"
       - name: Test WSL container
-        if: false
         run: |
-          SCALAR_TYPE=${{ (inputs || github.event.inputs).scalar-type }}
-          wsl --distribution "$env:CONTAINER_NAME-%SCALAR_TYPE%" bash -c "export PS1='mock' && source /root/.bashrc && python3 -m pip install --no-dependencies nbvalx simpleeval && NBVALX_VERSION=\$(python3 -c 'import importlib.metadata; print(importlib.metadata.version(\"nbvalx\"))') && cd /usr/local/share/fem-on-colab && wget https://github.com/nbvalx/nbvalx/raw/v\${NBVALX_VERSION}/tests/notebooks/conftest.py -O conftest.py && ARGS="%SCALAR_TYPE%" pytest --nbval-cell-timeout=300 fenicsx/ firedrake/ gmsh/ ngsolve/"
+          $SCALAR_TYPE="${{ (inputs || github.event.inputs).scalar-type }}"
+          wsl --distribution "$env:CONTAINER_NAME-$SCALAR_TYPE" bash -c "export PS1='mock' && source /root/.bashrc && python3 -m pip install --no-dependencies nbvalx simpleeval && NBVALX_VERSION=\`$(python3 -c 'import importlib.metadata; print(importlib.metadata.version(\`"nbvalx\`"))') && cd /usr/local/share/fem-on-colab && wget https://github.com/nbvalx/nbvalx/raw/v\`${NBVALX_VERSION}/tests/notebooks/conftest.py -O conftest.py && PACKAGES=(\`"fenicsx\`" \`"firedrake\`" \`"gmsh\`" \`"ngsolve\`") && TESTS=(\`"test-dolfinx.ipynb\`" \`"test-firedrake.ipynb\`" \`"test.ipynb\`" \`"test-ngsolve.ipynb\`") && for I in \`${!PACKAGES[@]}; do ARGS='$SCALAR_TYPE' pytest --nbval-cell-timeout=300 \`${PACKAGES[I]}/\`${TESTS[I]}; done"

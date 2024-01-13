@@ -19,8 +19,8 @@ on:
         description: "Token that enables writing to Docker Hub"
 
 jobs:
-  # FEniCS build
-  build_fenics:
+  # FEniCS/real build
+  build_fenics_real:
     if: github.repository == 'numericalpdes/docker' && (github.event_name == 'schedule' || (inputs || github.event.inputs).library == '' || (inputs || github.event.inputs).library == 'fenics')
     uses: numericalpdes/docker/.github/workflows/release.yml@main
     with:
