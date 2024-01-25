@@ -85,7 +85,7 @@ jobs:
         shell: bash
       - name: Upload archive as an artifact in case of failure
         if: failure() || cancelled()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: "artifact"
           path: |
