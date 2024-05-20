@@ -57,7 +57,7 @@ jobs:
           LIBRARY=${{ (inputs || github.event.inputs).library }}
           ARGS="${{ (inputs || github.event.inputs).args }}"
           IMAGE_NAME="${{ steps.image_name.outputs.image_name }}"
-          docker run -i ${IMAGE_NAME} bash -c "cd /usr/local/share/fem-on-colab && if [ -d "${LIBRARY}" ] && [ "${LIBRARY}" != "base" ]; then python3 -m pip install --no-dependencies nbvalx simpleeval && NBVALX_VERSION=\$(python3 -c 'import importlib.metadata; print(importlib.metadata.version(\"nbvalx\"))') && wget https://github.com/nbvalx/nbvalx/raw/v\${NBVALX_VERSION}/tests/notebooks/conftest.py -O ${LIBRARY}/conftest.py && ARGS="${ARGS}" pytest --nbval-cell-timeout=300 ${LIBRARY}/; fi"
+          docker run -i ${IMAGE_NAME} bash -c "if [ \"${LIBRARY}\" != \"base\" ]; then /usr/local/share/numerical-pdes-docker/scripts/run_test_notebooks.sh \"${ARGS}\" \"${LIBRARY}\"; fi"
       - name: Create an archive of test directory in case of failure
         if: failure() || cancelled()
         run: |
