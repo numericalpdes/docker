@@ -8,7 +8,7 @@ set -e
 set -x
 
 # Common
-apt install -y -qq autoconf bison build-essential cmake curl flex git jq libtool libtool-bin ninja-build patchelf pkg-config rsync software-properties-common unzip wget
+apt install -y -qq autoconf bison build-essential curl flex git jq libtool libtool-bin ninja-build patchelf pkg-config rsync software-properties-common unzip wget
 
 # gcc
 apt install -y gcc g++ gfortran
@@ -19,6 +19,10 @@ rm /usr/lib/python3.*/EXTERNALLY-MANAGED
 
 # setuptools
 apt install -y -qq python3-setuptools
+
+# cmake
+apt install -y -qq cmake
+python3 -m pip install cmake
 
 # Numpy
 python3 -m pip install numpy
