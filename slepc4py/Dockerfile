@@ -8,7 +8,6 @@ ARG ARGS
 FROM numericalpdes/base_images:petsc4py-${ARGS} as petsc4py_args
 
 FROM numericalpdes/base_images:base
-MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
 ARG ARGS
 

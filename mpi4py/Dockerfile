@@ -5,7 +5,6 @@
 # SPDX-License-Identifier: MIT
 
 FROM numericalpdes/base_images:base
-MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
 COPY . ${DOCKER_SCRIPTS}
 

@@ -5,7 +5,6 @@
 # SPDX-License-Identifier: MIT
 
 FROM debian:testing AS base
-MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
 ENV INSTALL_PREFIX=/usr/local \
     INSTALL_SCRIPTS=/usr/local/share/fem-on-colab \

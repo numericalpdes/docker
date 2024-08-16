@@ -8,7 +8,6 @@ ARG ARGS
 FROM numericalpdes/base_images:slepc4py-${ARGS} as slepc4py_args
 
 FROM numericalpdes/base_images:base
-MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
 ARG ARGS
 

@@ -10,7 +10,6 @@ FROM numericalpdes/base_images:firedrake-${ARGS} as firedrake_args
 FROM numericalpdes/base_images:ngsolve-${ARGS} as ngsolve_args
 
 FROM numericalpdes/base_images:base
-MAINTAINER Francesco Ballarin <francesco.ballarin@unicatt.it>
 
 ARG ARGS
 
