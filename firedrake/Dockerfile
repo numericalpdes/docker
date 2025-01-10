@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: MIT
 
 ARG ARGS
-FROM numericalpdes/base_images:slepc4py-${ARGS} as slepc4py_args
+FROM numericalpdes/base_images:slepc4py-${ARGS} AS slepc4py_args
 
 FROM numericalpdes/base_images:base
 

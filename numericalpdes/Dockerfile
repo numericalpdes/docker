@@ -5,9 +5,9 @@
 # SPDX-License-Identifier: MIT
 
 ARG ARGS
-FROM numericalpdes/base_images:fenicsx-${ARGS} as fenicsx_args
-FROM numericalpdes/base_images:firedrake-${ARGS} as firedrake_args
-FROM numericalpdes/base_images:ngsolve-${ARGS} as ngsolve_args
+FROM numericalpdes/base_images:fenicsx-${ARGS} AS fenicsx_args
+FROM numericalpdes/base_images:firedrake-${ARGS} AS firedrake_args
+FROM numericalpdes/base_images:ngsolve-${ARGS} AS ngsolve_args
 
 FROM numericalpdes/base_images:base
 

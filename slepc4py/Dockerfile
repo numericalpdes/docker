@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: MIT
 
 ARG ARGS
-FROM numericalpdes/base_images:petsc4py-${ARGS} as petsc4py_args
+FROM numericalpdes/base_images:petsc4py-${ARGS} AS petsc4py_args
 
 FROM numericalpdes/base_images:base
 
