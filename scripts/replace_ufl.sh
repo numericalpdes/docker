@@ -14,20 +14,24 @@ SOURCE_PATH="$1"
 cd ${SOURCE_PATH}
 
 # Replace ufl with ufl_fork in python files
-find . -type f -not -path "./.git/*" -exec sed -i -e 's|import ufl$|import ufl_fork|g' {} \;
-find . -type f -not -path "./.git/*" -exec sed -i -e 's|import ufl"|import ufl_fork"|g' {} \;
-find . -type f -not -path "./.git/*" -exec sed -i 's|import ufl\.|import ufl_fork\.|g' {} \;
-find . -type f -not -path "./.git/*" -exec sed -i 's|from ufl |from ufl_fork |g' {} \;
-find . -type f -not -path "./.git/*" -exec sed -i 's|from ufl\.|from ufl_fork\.|g' {} \;
-find . -type f -not -path "./.git/*" -exec sed -i -e 's|del ufl$|del ufl_fork|g' {} \;
-find . -type f -not -path "./.git/*" -exec sed -i 's|ufl\.|ufl_fork\.|g' {} \;
+find . -type f \( -name "*.ipynb" -o -name "*.py" \) -not -path "./.git/*" -exec sed -i -e 's|import ufl$|import ufl_fork|g' {} \;
+find . -type f \( -name "*.ipynb" -o -name "*.py" \) -not -path "./.git/*" -exec sed -i -e 's|import ufl"|import ufl_fork"|g' {} \;
+find . -type f \( -name "*.ipynb" -o -name "*.py" \) -not -path "./.git/*" -exec sed -i 's|import ufl\.|import ufl_fork\.|g' {} \;
+find . -type f \( -name "*.ipynb" -o -name "*.py" \) -not -path "./.git/*" -exec sed -i 's|from ufl |from ufl_fork |g' {} \;
+find . -type f \( -name "*.ipynb" -o -name "*.py" \) -not -path "./.git/*" -exec sed -i 's|from ufl\.|from ufl_fork\.|g' {} \;
+find . -type f \( -name "*.ipynb" -o -name "*.py" \) -not -path "./.git/*" -exec sed -i -e 's|del ufl$|del ufl_fork|g' {} \;
+find . -type f \( -name "*.ipynb" -o -name "*.py" \) -not -path "./.git/*" -exec sed -i 's|ufl\.|ufl_fork\.|g' {} \;
+find . -type f \( -name "*.ipynb" -o -name "*.py" \) -not -path "./.git/*" -exec sed -i 's|"fenics-ufl"|"fenics-ufl-fork"|g' {} \;
 
-# Replace ufl with ufl_fork in pyproject
-find . -type f -not -path "./.git/*" -exec sed -i 's|"ufl"|"ufl_fork"|g' {} \;
-find . -type f -not -path "./.git/*" -exec sed -i 's|fenics-ufl|fenics-ufl-fork|g' {} \;
+# Replace ufl with ufl_fork in setup.py/pyproject.toml
+find . -type f -name "pyproject.toml" -not -path "./.git/*" -exec sed -i 's|"ufl"|"ufl_fork"|g' {} \;
+find . -type f -name "pyproject.toml" -not -path "./.git/*" -exec sed -i 's|"ufl\.|"ufl_fork\.|g' {} \;
+find . -type f -name "pyproject.toml" -not -path "./.git/*" -exec sed -i 's|fenics-ufl|fenics-ufl-fork|g' {} \;
+find . -type f -name "setup.py" -not -path "./.git/*" -exec sed -i 's|"ufl"|"ufl_fork"|g' {} \;
+find . -type f -name "setup.py" -not -path "./.git/*" -exec sed -i 's|fenics-ufl|fenics-ufl-fork|g' {} \;
 
 # finat.ufl must be left unchanged
-find . -type f -not -path "./.git/*" -exec sed -i 's|finat\.ufl_fork\.|finat\.ufl\.|g' {} \;
+find . -type f \( -name "*.ipynb" -o -name "*.py" \) -not -path "./.git/*" -exec sed -i 's|finat\.ufl_fork\.|finat\.ufl\.|g' {} \;
 
 # tsfc.ufl2gem must be left unchanged
-find . -type f -not -path "./.git/*" -exec sed -i 's|ufl_fork2gem|ufl2gem|g' {} \;
+find . -type f \( -name "*.ipynb" -o -name "*.py" \) -not -path "./.git/*" -exec sed -i 's|ufl_fork2gem|ufl2gem|g' {} \;
