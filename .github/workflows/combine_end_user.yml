@@ -32,7 +32,7 @@ env:
 
 jobs:
   release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check scalar type
         run: |
@@ -51,10 +51,9 @@ jobs:
           remove-haskell: 'true'
           remove-codeql: 'true'
       - uses: actions/checkout@v4
-
       - name: Enable experimental docker features
         run: |
-          sudo sed -i 's/}/,"experimental": true}/' /etc/docker/daemon.json
+          sudo sh -c "echo '{\"experimental\": true}' > /etc/docker/daemon.json"
           sudo systemctl restart docker
       - name: Build docker image
         run: |
