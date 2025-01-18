@@ -4,7 +4,9 @@
 #
 # SPDX-License-Identifier: MIT
 
-FROM numericalpdes/base_images:base
+ARG ARCH
+
+FROM ghcr.io/numericalpdes/base:latest-${ARCH}
 
 COPY . ${DOCKER_SCRIPTS}
 

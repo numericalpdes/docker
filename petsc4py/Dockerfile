@@ -4,15 +4,19 @@
 #
 # SPDX-License-Identifier: MIT
 
-FROM numericalpdes/base_images:base
+ARG ARCH
+
+FROM ghcr.io/numericalpdes/h5py:latest-${ARCH} AS h5py
+
+FROM ghcr.io/numericalpdes/base:latest-${ARCH}
 
 ARG ARGS
 
-COPY --from=numericalpdes/base_images:h5py /usr /usr
+COPY --from=h5py /etc /etc
+COPY --from=h5py /usr /usr
 COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
     apt install -y -qq libblas-dev libcurl4-openssl-dev liblapack-dev libxml2-dev && \
-    ln -fs /usr/lib/x86_64-linux-gnu/blas/* /usr/lib/x86_64-linux-gnu/ && ln -fs /usr/lib/x86_64-linux-gnu/lapack/* /usr/lib/x86_64-linux-gnu/ && \
     cd ${INSTALL_SCRIPTS} && bash petsc4py/build.sh ${ARGS} && cd - && \
     cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -

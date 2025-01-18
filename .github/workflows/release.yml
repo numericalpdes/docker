@@ -15,69 +15,74 @@ on:
       args:
         description: "Additional space separated arguments to be passed to the build script. If empty, no arguments are passed"
         type: string
-    secrets:
-      CI_REGISTRY_USER:
-        description: "Docker Hub username"
-      CI_REGISTRY_PASSWORD:
-        description: "Token that enables writing to Docker Hub"
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - arch: amd64
+            os: ubuntu-latest
+          - arch: arm64
+            os: ubuntu-24.04-arm
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Determine image name
         id: image_name
         run: |
           LIBRARY=${{ (inputs || github.event.inputs).library }}
+          ARCH=${{ matrix.arch }}
           ARGS="${{ (inputs || github.event.inputs).args }}"
           if [ -z "${ARGS}" ]; then
-            IMAGE_NAME=numericalpdes/base_images:${LIBRARY}
+            IMAGE_NAME=ghcr.io/numericalpdes/${LIBRARY}:latest-${ARCH}
           else
-            IMAGE_NAME=numericalpdes/base_images:${LIBRARY}-${ARGS}
+            IMAGE_NAME=ghcr.io/numericalpdes/${LIBRARY}-${ARGS}:latest-${ARCH}
           fi
           echo "image_name=${IMAGE_NAME}" >> ${GITHUB_OUTPUT}
       - name: Build docker image
         run: |
           LIBRARY=${{ (inputs || github.event.inputs).library }}
+          ARCH=${{ matrix.arch }}
           ARGS="${{ (inputs || github.event.inputs).args }}"
           IMAGE_NAME="${{ steps.image_name.outputs.image_name }}"
-          DOCKER_BUILDKIT=0 docker build --pull -t ${IMAGE_NAME} -f ${LIBRARY}/Dockerfile --build-arg ARGS=${ARGS} .
-      - name: Create an archive of build directory in case of failure
-        if: failure() || cancelled()
-        run: |
-          FAILED_CONTAINER=$(docker ps -l -q)
-          docker cp ${FAILED_CONTAINER}:/tmp /tmp/build-failure
-          if compgen -G "/tmp/build-failure/*-src" > /dev/null; then
-            tar czf build.tar.gz /tmp/build-failure/*-src
-          fi
-        shell: bash
+          docker build --pull -t ${IMAGE_NAME} -f ${LIBRARY}/Dockerfile --build-arg ARCH=${ARCH} --build-arg ARGS=${ARGS} .
       - name: Test docker image
         run: |
           LIBRARY=${{ (inputs || github.event.inputs).library }}
+          ARCH=${{ matrix.arch }}
           ARGS="${{ (inputs || github.event.inputs).args }}"
           IMAGE_NAME="${{ steps.image_name.outputs.image_name }}"
-          docker run -i ${IMAGE_NAME} bash -c "if [ \"${LIBRARY}\" != \"base\" ]; then /usr/local/share/numerical-pdes-docker/scripts/run_test_notebooks.sh \"${ARGS}\" \"${LIBRARY}\"; fi"
-      - name: Create an archive of test directory in case of failure
-        if: failure() || cancelled()
-        run: |
-          LIBRARY=${{ (inputs || github.event.inputs).library }}
-          FAILED_CONTAINER=$(docker ps -l -q)
-          docker cp ${FAILED_CONTAINER}:/usr/local/share/fem-on-colab/${LIBRARY} /tmp/test-failure
-          tar czf test.tar.gz /tmp/test-failure
+          docker run -i ${IMAGE_NAME} bash -c "if [ \"${LIBRARY}\" != \"base\" ]; then /usr/local/share/numerical-pdes-docker/scripts/run_test_notebooks.sh \"${ARCH}\" \"${ARGS}\" \"${LIBRARY}\"; fi"
       - name: Log into the docker registry
         if: github.repository == 'numericalpdes/docker'
-        run: docker login -u ${{ secrets.CI_REGISTRY_USER }} -p ${{ secrets.CI_REGISTRY_PASSWORD }}
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Push to the docker registry
         if: github.repository == 'numericalpdes/docker'
         run: |
           IMAGE_NAME="${{ steps.image_name.outputs.image_name }}"
           docker push ${IMAGE_NAME}
-      - name: Upload archive as an artifact in case of failure
-        if: failure() || cancelled()
-        uses: actions/upload-artifact@v4
-        with:
-          name: "artifact ${{ (inputs || github.event.inputs).library }} ${{ (inputs || github.event.inputs).args }}"
-          path: |
-            build.tar.gz
-            test.tar.gz
+
+  publish-multiarch-docker:
+    needs: [release]
+    if: github.repository == 'numericalpdes/docker'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine image name
+        id: image_name
+        run: |
+          LIBRARY=${{ (inputs || github.event.inputs).library }}
+          ARGS="${{ (inputs || github.event.inputs).args }}"
+          if [ -z "${ARGS}" ]; then
+            IMAGE_NAME=ghcr.io/numericalpdes/${LIBRARY}:latest
+          else
+            IMAGE_NAME=ghcr.io/numericalpdes/${LIBRARY}-${ARGS}:latest
+          fi
+          echo "image_name=${IMAGE_NAME}" >> ${GITHUB_OUTPUT}
+      - name: Log into the docker registry
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Push to the docker registry
+        run: |
+          IMAGE_NAME="${{ steps.image_name.outputs.image_name }}"
+          docker buildx imagetools create -t ${IMAGE_NAME} ${IMAGE_NAME}-amd64 ${IMAGE_NAME}-arm64

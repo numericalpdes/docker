@@ -4,17 +4,26 @@
 #
 # SPDX-License-Identifier: MIT
 
-ARG ARGS
-FROM numericalpdes/base_images:slepc4py-${ARGS} AS slepc4py_args
-
-FROM numericalpdes/base_images:base
-
+ARG ARCH
 ARG ARGS
 
-COPY --from=numericalpdes/base_images:boost /usr /usr
-COPY --from=numericalpdes/base_images:vtk /usr /usr
-COPY --from=numericalpdes/base_images:pybind11 /usr /usr
-COPY --from=slepc4py_args /usr /usr
+FROM ghcr.io/numericalpdes/boost:latest-${ARCH} AS boost
+FROM ghcr.io/numericalpdes/pybind11:latest-${ARCH} AS pybind11
+FROM ghcr.io/numericalpdes/slepc4py-${ARGS}:latest-${ARCH} AS slepc4py
+FROM ghcr.io/numericalpdes/vtk:latest-${ARCH} AS vtk
+
+FROM ghcr.io/numericalpdes/base:latest-${ARCH}
+
+ARG ARGS
+
+COPY --from=boost /etc /etc
+COPY --from=boost /usr /usr
+COPY --from=pybind11 /etc /etc
+COPY --from=pybind11 /usr /usr
+COPY --from=slepc4py /etc /etc
+COPY --from=slepc4py /usr /usr
+COPY --from=vtk /etc /etc
+COPY --from=vtk /usr /usr
 COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \

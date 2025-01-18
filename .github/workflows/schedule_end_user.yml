@@ -12,11 +12,6 @@ on:
       library:
         description: "Library to build and test"
         type: string
-    secrets:
-      CI_REGISTRY_USER:
-        description: "Docker Hub username"
-      CI_REGISTRY_PASSWORD:
-        description: "Token that enables writing to Docker Hub"
 
 jobs:
   # FEniCS/real build
@@ -26,9 +21,6 @@ jobs:
     with:
       library: "fenics"
       args: "real"
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # FEniCSx/real build
   build_fenicsx_real:
@@ -37,9 +29,6 @@ jobs:
     with:
       library: "fenicsx"
       args: "real"
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # FEniCSx/complex build
   build_fenicsx_complex:
@@ -48,9 +37,6 @@ jobs:
     with:
       library: "fenicsx"
       args: "complex"
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # Firedrake/real build
   build_firedrake_real:
@@ -59,9 +45,6 @@ jobs:
     with:
       library: "firedrake"
       args: "real"
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # Firedrake/complex build
   build_firedrake_complex:
@@ -70,9 +53,6 @@ jobs:
     with:
       library: "firedrake"
       args: "complex"
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # Gmsh build
   build_gmsh:
@@ -81,9 +61,6 @@ jobs:
     with:
       library: "gmsh"
       args: ""
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # NGSolve/real build
   build_ngsolve_real:
@@ -92,9 +69,6 @@ jobs:
     with:
       library: "ngsolve"
       args: "real"
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # NGSolve/complex build
   build_ngsolve_complex:
@@ -103,9 +77,6 @@ jobs:
     with:
       library: "ngsolve"
       args: "complex"
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # numericalpdes/real build
   build_numericalpdes_real:
@@ -122,8 +93,6 @@ jobs:
     with:
       scalar-type: "real"
     secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
       WEB_USER: ${{ secrets.WEB_USER }}
       WEB_SSH_PRIVATE_KEY: ${{ secrets.WEB_SSH_PRIVATE_KEY }}
       WEB_SERVER: ${{ secrets.WEB_SERVER }}
@@ -145,8 +114,6 @@ jobs:
     with:
       scalar-type: "complex"
     secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
       WEB_USER: ${{ secrets.WEB_USER }}
       WEB_SSH_PRIVATE_KEY: ${{ secrets.WEB_SSH_PRIVATE_KEY }}
       WEB_SERVER: ${{ secrets.WEB_SERVER }}

@@ -19,9 +19,6 @@ jobs:
     with:
       library: "base"
       args: ""
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # Boost build
   build_boost:
@@ -40,9 +37,6 @@ jobs:
     with:
       library: "boost"
       args: ""
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # mpi4py build
   build_mpi4py:
@@ -61,9 +55,6 @@ jobs:
     with:
       library: "mpi4py"
       args: ""
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # OCC build
   build_occ:
@@ -82,9 +73,6 @@ jobs:
     with:
       library: "occ"
       args: ""
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # h5py build
   build_h5py:
@@ -103,9 +91,6 @@ jobs:
     with:
       library: "h5py"
       args: ""
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # pybind11 build
   build_pybind11:
@@ -124,9 +109,6 @@ jobs:
     with:
       library: "pybind11"
       args: ""
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # petsc4py/real build
   build_petsc4py_real:
@@ -145,9 +127,6 @@ jobs:
     with:
       library: "petsc4py"
       args: "real"
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # petsc4py/complex build
   build_petsc4py_complex:
@@ -166,9 +145,6 @@ jobs:
     with:
       library: "petsc4py"
       args: "complex"
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # vtk build
   build_vtk:
@@ -187,9 +163,6 @@ jobs:
     with:
       library: "vtk"
       args: ""
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # slepc4py/real build
   build_slepc4py_real:
@@ -208,9 +181,6 @@ jobs:
     with:
       library: "slepc4py"
       args: "real"
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # slepc4py/complex build
   build_slepc4py_complex:
@@ -229,9 +199,6 @@ jobs:
     with:
       library: "slepc4py"
       args: "complex"
-    secrets:
-      CI_REGISTRY_USER: ${{ secrets.CI_REGISTRY_USER }}
-      CI_REGISTRY_PASSWORD: ${{ secrets.CI_REGISTRY_PASSWORD }}
 
   # Warn if scheduled workflow is about to be disabled
   warn:

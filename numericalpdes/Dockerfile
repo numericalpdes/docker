@@ -4,19 +4,24 @@
 #
 # SPDX-License-Identifier: MIT
 
-ARG ARGS
-FROM numericalpdes/base_images:fenicsx-${ARGS} AS fenicsx_args
-FROM numericalpdes/base_images:firedrake-${ARGS} AS firedrake_args
-FROM numericalpdes/base_images:ngsolve-${ARGS} AS ngsolve_args
-
-FROM numericalpdes/base_images:base
-
+ARG ARCH
 ARG ARGS
 
-COPY --from=fenicsx_args /usr /usr
-COPY --from=firedrake_args /usr /usr
-COPY --from=numericalpdes/base_images:gmsh /usr /usr
-COPY --from=ngsolve_args /usr /usr
+FROM ghcr.io/numericalpdes/fenicsx-${ARGS}:latest-${ARCH} AS fenicsx
+FROM ghcr.io/numericalpdes/firedrake-${ARGS}:latest-${ARCH} AS firedrake
+FROM ghcr.io/numericalpdes/gmsh:latest-${ARCH} AS gmsh
+FROM ghcr.io/numericalpdes/ngsolve-${ARGS}:latest-${ARCH} AS ngsolve
+
+FROM ghcr.io/numericalpdes/base:latest-${ARCH}
+
+COPY --from=fenicsx /etc /etc
+COPY --from=fenicsx /usr /usr
+COPY --from=firedrake /etc /etc
+COPY --from=firedrake /usr /usr
+COPY --from=gmsh /etc /etc
+COPY --from=gmsh /usr /usr
+COPY --from=ngsolve /etc /etc
+COPY --from=ngsolve /usr /usr
 COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \

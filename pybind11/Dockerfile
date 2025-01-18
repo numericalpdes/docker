@@ -4,9 +4,14 @@
 #
 # SPDX-License-Identifier: MIT
 
-FROM numericalpdes/base_images:base
+ARG ARCH
 
-COPY --from=numericalpdes/base_images:mpi4py /usr /usr
+FROM ghcr.io/numericalpdes/mpi4py:latest-${ARCH} AS mpi4py
+
+FROM ghcr.io/numericalpdes/base:latest-${ARCH}
+
+COPY --from=mpi4py /etc /etc
+COPY --from=mpi4py /usr /usr
 COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \

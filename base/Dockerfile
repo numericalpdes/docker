@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-FROM debian:testing AS base
+FROM debian:testing
 
 ENV INSTALL_PREFIX=/usr/local \
     INSTALL_SCRIPTS=/usr/local/share/fem-on-colab \
@@ -22,5 +22,5 @@ RUN cd ${DOCKER_SCRIPTS} && \
     cd -
 
 ENV PATH="${INSTALL_PREFIX}/bin:${PATH}" \
-    LD_LIBRARY_PATH="${INSTALL_PREFIX}/lib:${LD_LIBRARY_PATH}" \
-    PYTHONPATH="${INSTALL_PREFIX}/lib/${PYTHON_VERSION}/dist-packages:${INSTALL_PREFIX}/lib/${PYTHON_VERSION}/site-packages:${PYTHONPATH}"
+    LD_LIBRARY_PATH="${INSTALL_PREFIX}/lib" \
+    PYTHONPATH="${INSTALL_PREFIX}/lib/${PYTHON_VERSION}/dist-packages:${INSTALL_PREFIX}/lib/${PYTHON_VERSION}/site-packages"
