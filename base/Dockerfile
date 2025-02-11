@@ -9,7 +9,7 @@ FROM debian:testing
 ENV INSTALL_PREFIX=/usr/local \
     INSTALL_SCRIPTS=/usr/local/share/fem-on-colab \
     DOCKER_SCRIPTS=/usr/local/share/numerical-pdes-docker \
-    PYTHON_VERSION=python3.12
+    PYTHON_VERSION=python3.13
 
 COPY . ${DOCKER_SCRIPTS}
 
