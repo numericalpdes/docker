@@ -25,8 +25,6 @@ for LIBRARY in "$@"; do
         for TEST in test-fireshape.ipynb test-irksome.ipynb; do
             sed -i -e "s|python3 -m pip install --no-dependencies git+\(.*\).git|CLONE_DIR=\$(mktemp -d) \&\& git clone \1.git \${CLONE_DIR} \&\& \${DOCKER_SCRIPTS}/scripts/replace_ufl.sh \${CLONE_DIR} \&\& cd \${CLONE_DIR} \&\& python3 -m pip install --no-dependencies \.|g" ${LIBRARY}/${TEST}
         done
-    elif [[ "${LIBRARY}" == "vtk" && "${ARCH}" == "arm64" ]]; then
-        rm vtk/test-pyvista.ipynb vtk/test-vtk.ipynb
     fi
     wget https://github.com/nbvalx/nbvalx/raw/v${NBVALX_VERSION}/tests/notebooks/conftest.py -O ${LIBRARY}/conftest.py
     ARGS="development ${SCALAR_TYPE}" pytest --nbval-cell-timeout=300 ${LIBRARY}/

@@ -18,7 +18,7 @@ COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
     cd ${INSTALL_SCRIPTS} && \
-        if [ "${ARCH}" = "arm64" ]; then sed -i 's|python3 -m pip install --user .\[jupyter\]|echo "Skipped due to vtk not being available on linux arm64"|' vtk/build.sh; fi && \
+        sed -i "s|patch -p 1 < \$REPODIR/vtk/patches/01-start-xvfb|patch -p 1 < \$REPODIR/vtk/patches/01-start-xvfb\napt install -y -q python3-paraview\nsed -i \"s/'vtk<9.4.0',//\" pyproject.toml|" vtk/build.sh && \
         bash vtk/build.sh && \
         cd - && \
     cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -
