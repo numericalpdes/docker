@@ -86,7 +86,7 @@ jobs:
         (
           github.event_name == 'schedule' && needs.build_fenicsx_real.result == 'success' && needs.build_firedrake_real.result == 'success' && needs.build_gmsh.result == 'success' && needs.build_ngsolve_real.result == 'success'
         ) || (
-          github.event_name != 'schedule' && (needs.build_fenicsx_real.result == 'skipped' || needs.build_fenicsx_real.result == 'success') && (needs.build_firedrake_real.result == 'skipped' || needs.build_firedrake_real.result == 'success') && (needs.build_gmsh.result == 'skipped' || needs.build_gmsh.result == 'success') && (needs.build_ngsolve_real.result == 'skipped' || needs.build_ngsolve_real.result == 'success') && always() && !cancelled()
+          github.event_name != 'schedule' && (needs.build_fenicsx_real.result == 'skipped' || needs.build_fenicsx_real.result == 'success') && (needs.build_firedrake_real.result == 'skipped' || needs.build_firedrake_real.result == 'success') && (needs.build_gmsh.result == 'skipped' || needs.build_gmsh.result == 'success') && (needs.build_ngsolve_real.result == 'skipped' || needs.build_ngsolve_real.result == 'success') && (needs.build_fenicsx_real.result == 'success' || needs.build_firedrake_real.result == 'success' || needs.build_gmsh.result == 'success' || needs.build_ngsolve_real.result == 'success') && always() && !cancelled()
         )
       )
     uses: numericalpdes/docker/.github/workflows/combine_end_user.yml@main
@@ -107,7 +107,7 @@ jobs:
         (
           github.event_name == 'schedule' && needs.build_fenicsx_complex.result == 'success' && needs.build_firedrake_complex.result == 'success' && needs.build_gmsh.result == 'success' && needs.build_ngsolve_complex.result == 'success'
         ) || (
-          github.event_name != 'schedule' && (needs.build_fenicsx_complex.result == 'skipped' || needs.build_fenicsx_complex.result == 'success') && (needs.build_firedrake_complex.result == 'skipped' || needs.build_firedrake_complex.result == 'success') && (needs.build_gmsh.result == 'skipped' || needs.build_gmsh.result == 'success') && (needs.build_ngsolve_complex.result == 'skipped' || needs.build_ngsolve_complex.result == 'success') && always() && !cancelled()
+          github.event_name != 'schedule' && (needs.build_fenicsx_complex.result == 'skipped' || needs.build_fenicsx_complex.result == 'success') && (needs.build_firedrake_complex.result == 'skipped' || needs.build_firedrake_complex.result == 'success') && (needs.build_gmsh.result == 'skipped' || needs.build_gmsh.result == 'success') && (needs.build_ngsolve_complex.result == 'skipped' || needs.build_ngsolve_complex.result == 'success') && (needs.build_fenicsx_complex.result == 'success' || needs.build_firedrake_complex.result == 'success' || needs.build_gmsh.result == 'success' || needs.build_ngsolve_complex.result == 'success') && always() && !cancelled()
         )
       )
     uses: numericalpdes/docker/.github/workflows/combine_end_user.yml@main
