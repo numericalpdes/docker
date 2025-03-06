@@ -29,6 +29,6 @@ for LIBRARY in "$@"; do
         rm vtk/test-pyvista.ipynb vtk/test-vtk.ipynb
     fi
     wget https://github.com/nbvalx/nbvalx/raw/v${NBVALX_VERSION}/tests/notebooks/conftest.py -O ${LIBRARY}/conftest.py
-    ARGS="${SCALAR_TYPE}" pytest --nbval-cell-timeout=300 ${LIBRARY}/
+    ARGS="development ${SCALAR_TYPE}" pytest --nbval-cell-timeout=300 ${LIBRARY}/
 done
 git reset --hard

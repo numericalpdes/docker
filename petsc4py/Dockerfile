@@ -18,5 +18,5 @@ COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
     apt install -y -qq libblas-dev libcurl4-openssl-dev liblapack-dev libxml2-dev && \
-    cd ${INSTALL_SCRIPTS} && bash petsc4py/build.sh ${ARGS} && cd - && \
+    cd ${INSTALL_SCRIPTS} && bash petsc4py/build.sh development ${ARGS} && cd - && \
     cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -

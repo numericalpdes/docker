@@ -38,6 +38,6 @@ RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
         echo "PYTHONUSERBASE=${INSTALL_PREFIX} python3 -m pip install --user ." >> firedrake/build.sh && \
         echo "python3 -m pip uninstall -y fenics-ufl" >> firedrake/build.sh && \
         echo "${DOCKER_SCRIPTS}/scripts/replace_ufl.sh ${INSTALL_PREFIX}" >> firedrake/build.sh && \
-        bash firedrake/build.sh ${ARGS} && \
+        bash firedrake/build.sh development ${ARGS} && \
         cd - && \
     cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -

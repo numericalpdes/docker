@@ -24,5 +24,5 @@ COPY --from=slepc4py /usr /usr
 COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
-    cd ${INSTALL_SCRIPTS} && bash fenics/build.sh ${ARGS} && cd - && \
+    cd ${INSTALL_SCRIPTS} && bash fenics/build.sh development ${ARGS} && cd - && \
     cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -
