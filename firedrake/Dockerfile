@@ -30,6 +30,7 @@ COPY . ${DOCKER_SCRIPTS}
 # the final numericalpdes image contains both FEniCSx and firedake, we need firedake's ufl
 # alongside upstream ufl. For this reason, we rename to ufl_fork the ufl version required by firedrake
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
+    apt install -y -qq fonts-dejavu graphviz libgraphviz-dev poppler-utils && \
     cd ${INSTALL_SCRIPTS} && \
         echo "git clone https://github.com/firedrakeproject/ufl.git /tmp/ufl-src" >> firedrake/build.sh && \
         echo "${DOCKER_SCRIPTS}/scripts/replace_ufl.sh /tmp/ufl-src" >> firedrake/build.sh && \
