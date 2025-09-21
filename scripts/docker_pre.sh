@@ -14,7 +14,7 @@ if [ ! -d $INSTALL_SCRIPTS ]; then
     git clone https://github.com/fem-on-colab/fem-on-colab.git $INSTALL_SCRIPTS
 else
     cd $INSTALL_SCRIPTS
-    git pull origin main
+    git pull origin main || { echo "Failed to update FEM on Colab repository"; exit 1; }
     cd -
 fi
 
