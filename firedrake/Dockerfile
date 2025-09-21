@@ -28,7 +28,5 @@ COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
     apt install -y -qq fonts-dejavu graphviz libgraphviz-dev poppler-utils && \
-    cd ${INSTALL_SCRIPTS} && \
-        bash firedrake/build.sh development ${ARGS} && \
-        cd - && \
+    cd ${INSTALL_SCRIPTS} && bash firedrake/build.sh development ${ARGS} && cd - && \
     cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -
