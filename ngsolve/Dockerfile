@@ -25,8 +25,5 @@ COPY --from=slepc4py /usr /usr
 COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
-    cd ${INSTALL_SCRIPTS} && \
-        if [ "${ARCH}" = "arm64" ]; then sed -i 's|cd /tmp/netgen-src/build|awk '\''/void FMAComplex/ {in_func=1} in_func {print "//" $0} !in_func {print} /}/ \&\& in_func {in_func=0}'\'' libsrc/core/simd_arm64.hpp > libsrc/core/simd_arm64.hpp.tmp \&\& mv libsrc/core/simd_arm64.hpp.tmp libsrc/core/simd_arm64.hpp \&\& cd /tmp/netgen-src/build|' ngsolve/build.sh; fi && \
-        bash ngsolve/build.sh development ${ARGS} && \
-        cd - && \
+    cd ${INSTALL_SCRIPTS} && bash ngsolve/build.sh development ${ARGS} && cd - && \
     cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -
