@@ -13,6 +13,9 @@ apt install -y -qq autoconf bison build-essential curl flex git jq libtool libto
 # gcc
 apt install -y gcc g++ gfortran
 
+# python
+apt install -y -qq python3-dev
+
 # pip
 apt install -y -qq python3-pip
 rm /usr/lib/python3.*/EXTERNALLY-MANAGED
