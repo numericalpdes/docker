@@ -27,6 +27,6 @@ COPY --from=vtk /usr /usr
 COPY . ${DOCKER_SCRIPTS}
 
 RUN cd ${DOCKER_SCRIPTS} && . scripts/docker_pre.sh && cd - && \
-    apt install -y -qq fonts-dejavu graphviz libgraphviz-dev poppler-utils && \
+    apt install -y -qq fonts-dejavu graphviz libgraphviz-dev poppler-utils python3-pygraphviz && \
     cd ${INSTALL_SCRIPTS} && bash firedrake/build.sh development ${ARGS} && cd - && \
     cd ${DOCKER_SCRIPTS} && . scripts/docker_post.sh && cd -
