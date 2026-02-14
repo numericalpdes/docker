@@ -49,4 +49,4 @@ python3 -m pip install jupyter
 python3 -m pip install nbval pytest
 
 # X11 related packages
-apt install -y -qq libfontconfig1 libgl1 libgl1-mesa-dev libglu1-mesa libxrender1 libxcursor1  libxft2 libxinerama1 xvfb
+apt install -y -qq libegl1 libfontconfig1 libgl1 libgl1-mesa-dev libgl1-mesa-dri libglu1-mesa libxrender1 libxcursor1  libxft2 libxinerama1
