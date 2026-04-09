@@ -8,7 +8,7 @@ set -e
 set -x
 
 # Common
-apt install -y -qq autoconf bison build-essential curl flex git jq libtool libtool-bin ninja-build patchelf pkg-config rsync unzip wget
+apt install -y -qq autoconf bison build-essential ca-certificates curl flex git jq libtool libtool-bin ninja-build patchelf pkg-config rsync unzip wget
 
 # gcc
 apt install -y gcc g++ gfortran

@@ -9,7 +9,7 @@ export DEBIAN_FRONTEND="noninteractive"
 apt update -y -q
 
 # Clone FEM on Colab repository
-apt install -y -qq git
+apt install -y -qq ca-certificates git
 if [ ! -d $INSTALL_SCRIPTS ]; then
     git clone https://github.com/fem-on-colab/fem-on-colab.git $INSTALL_SCRIPTS
 else
