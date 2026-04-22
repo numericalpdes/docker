@@ -42,6 +42,9 @@ python3 -m pip install Cython
 # sympy
 python3 -m pip install sympy
 
+# Build backends
+python3 -m pip install hatchling maturin meson meson-python ninja poetry-core pcpp puccinialin scikit-build-core[pyproject]
+
 # jupyter (for testing)
 python3 -m pip install jupyter
 
